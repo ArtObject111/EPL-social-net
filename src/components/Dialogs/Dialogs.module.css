@@ -1,14 +1,27 @@
 .dialogs {
     display: grid;
-    grid-template-columns: 2fr 10fr;
+    grid-template-columns: 3fr 10fr;
 }
 
 .dialogsItems {
     padding: 10px;
+    border-right: 1px solid silver;
+    margin: 5px 0 5px 0;
 }
 
 .dialogsItems .dialogItem {
+    display: grid;
+    grid-template-columns: 80px 140px;
+}
 
+.dialogsItems .dialogItem img {
+    border-radius: 50%;
+    width: 70px;
+    padding-bottom: 10px;
+}
+
+.dialogsItems .dialogItem .person {
+    border: 0px solid;
 }
 
 .dialogsItems .active {
@@ -17,8 +30,20 @@
 
 .messagesItems {
     padding: 10px;
+    border: 0px solid;
+    position: relative;
 }
 
 .messagesItems .messageItem {
 
+}
+
+.messagesItems .messageItem img{
+    border-radius: 50%;
+    width: 70px;
+}
+
+.sendMessageBlock {
+    margin-top: 20px;
+    border: 0px solid;
 }
