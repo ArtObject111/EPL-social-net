@@ -2,13 +2,6 @@ import React from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
 
-/*
-let postsData = [
-    {id: 1, message: "Hello, what's your favourite EPL's club?", likesCount: 15},
-    {id: 2, message: "I support Aston Willa", likesCount: 7}
-]
-*/
-
 const MyPosts = (props) => {
     let postsElements =
         props.postsData.map( posts =>   <Post id = {posts.id} message = {posts.message} likecount = {posts.likesCount}/> );
@@ -17,12 +10,15 @@ const MyPosts = (props) => {
 
 
     let addPost = () => {
-        props.addPost();
+        //props.addPost();
+        props.dispatch({type:"ADD-POST"});
     }
 
     let onPostChange = () => {
         let text = newPostElement.current.value;
-        props.updateNewPostText(text);
+        //props.updateNewPostText(text);
+        let action = {type:"UPDATE-NEW-POST-TEXT", newText: text};
+        props.dispatch(action);
     }
 
     return (

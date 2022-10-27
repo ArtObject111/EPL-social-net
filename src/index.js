@@ -1,12 +1,11 @@
 import React from 'react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import state, {subscribe} from "./redux/state";
+import store from "./redux/state";
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
-import {addPost, updateNewPostText, sendMessage, updateNewMessageText} from "./redux/state";
 
 // addPost("I'm Arsenal's player!");
 
@@ -17,19 +16,19 @@ let rerenderEntireTree = (state) => {
         //    кодом и предупредить о них (рекомендуется на стадии dev, но отключается на стадии production)
         <BrowserRouter>
             <App state={state}
-                 addPost={addPost}
-                 updateNewPostText = {updateNewPostText}
-                 sendMessage = {sendMessage}
-                 updateNewMessageText = {updateNewMessageText}
+                 dispatch={store.dispatch.bind(store)}
+                 /*addPost = {} updateNewPostText = {store.updateNewPostText.bind(store)}
+                 sendMessage = {store.sendMessage.bind(store)}
+                 updateNewMessageText = {store.updateNewMessageText.bind(store)}*/
             />
         </BrowserRouter>
         // </React.StrictMode>
     )
 };
 
-rerenderEntireTree(state);
+rerenderEntireTree(store.getState());//отсюда берем state для функции rerenderEntireTree
 
-subscribe(rerenderEntireTree);
+store.subscribe(rerenderEntireTree);
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
