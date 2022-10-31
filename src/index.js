@@ -6,6 +6,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
+import StoreContext from "./StoreContext";
 
 // addPost("I'm Arsenal's player!");
 
@@ -15,12 +16,9 @@ let rerenderEntireTree = (state) => {
         // <React.StrictMode> тег - выполняет рендеринг компонентов дважды, чтобы обнаружить любые проблемы
         //    кодом и предупредить о них (рекомендуется на стадии dev, но отключается на стадии production)
         <BrowserRouter>
-            <App state={state} store={store}
-                 dispatch={store.dispatch.bind(store)}
-                 /*addPost = {} updateNewPostText = {store.updateNewPostText.bind(store)}
-                 sendMessage = {store.sendMessage.bind(store)}
-                 updateNewMessageText = {store.updateNewMessageText.bind(store)}*/
-            />
+            <StoreContext.Provider value={store}>
+                <App />
+            </StoreContext.Provider>
         </BrowserRouter>
         // </React.StrictMode>
     )
@@ -30,7 +28,8 @@ rerenderEntireTree(store.getState());//отсюда берем state для фу
 
 store.subscribe(() => {
     let state = store.getState();
-    rerenderEntireTree(state)});
+    rerenderEntireTree(state)
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
