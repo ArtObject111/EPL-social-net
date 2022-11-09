@@ -2,11 +2,11 @@ const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 
 let initialState = {
-        postsData: [
-            {id: 1, message: "Hello, what's your favourite EPL's club?", likesCount: 15},
-            {id: 2, message: "I support Aston Willa", likesCount: 7}
-        ],
-            newPostText: "shkaf"
+    postsData: [
+        {id: 1, message: "Hello, what's your favourite EPL's club?", likesCount: 15},
+        {id: 2, message: "I support Aston Willa", likesCount: 7}
+    ],
+    newPostText: "shkaf"
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -17,12 +17,17 @@ const profileReducer = (state = initialState, action) => {
                 message: state.newPostText,
                 likesCount: 0
             };
-            state.postsData.push(newPost);
-            state.newPostText = "";
-            return state;
+            //state.postsData.push(newPost); //до копирования объекта
+            return {
+                ...state,
+                newPostText: "",
+                postsData: [...state.postsData, newPost]
+            };
         case UPDATE_NEW_POST_TEXT:
-            state.newPostText = action.newText;
-            return state;
+            return {
+                ...state,
+                newPostText: action.newText
+            };
         default:
             return state;
     }

@@ -6,30 +6,21 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import {BrowserRouter} from "react-router-dom";
-import StoreContext from "./StoreContext";
+import {Provider} from "react-redux";
 
 // addPost("I'm Arsenal's player!");
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-let rerenderEntireTree = (state) => {
-    root.render(
-        // <React.StrictMode> тег - выполняет рендеринг компонентов дважды, чтобы обнаружить любые проблемы
-        //    кодом и предупредить о них (рекомендуется на стадии dev, но отключается на стадии production)
-        <BrowserRouter>
-            <StoreContext.Provider value={store}>
-                <App />
-            </StoreContext.Provider>
-        </BrowserRouter>
-        // </React.StrictMode>
-    )
-};
-
-rerenderEntireTree(store.getState());//отсюда берем state для функции rerenderEntireTree
-
-store.subscribe(() => {
-    let state = store.getState();
-    rerenderEntireTree(state)
-});
+root.render(
+    // <React.StrictMode> тег - выполняет рендеринг компонентов дважды, чтобы обнаружить любые проблемы
+    //    кодом и предупредить о них (рекомендуется на стадии dev, но отключается на стадии production)
+    <BrowserRouter>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </BrowserRouter>
+    // </React.StrictMode>
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
