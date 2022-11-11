@@ -2,3 +2,17 @@
     border-radius: 50%;
     width: 100px;
 }
+
+.selectedPage {
+    font-weight: bold;
+    border-bottom: 1px solid;
+    padding-bottom: 3px;
+}
+
+.page {
+    margin: 3px;
+}
+
+.pageBar {
+    margin-bottom: 10px;
+}

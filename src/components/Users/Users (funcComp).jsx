@@ -1,25 +1,21 @@
 import React from "react";
-import s from "./Users.module.css";
-import userPhoto from "../../assets/images/user_image.png";
+import s from "./Users.module.css"
+import axios from "axios";
+import userPhoto from "../../assets/images/user_image.png"
 
-let Users = (props) => {
+let UsersFuncComp = (props) => {
 
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize); //округляем число страниц в большую сторону
-    let pagesArray = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pagesArray.push(i);
+    let getUsers = () => {
+        if (props.usersData.length === 0) {
+            axios.get("https://social-network.samuraijs.com/api/1.0/users")
+                .then(responce => {
+                    props.setUsers(responce.data.items)
+                });
+        }
     }
 
     return <div>
-        <div className={s.pageBar}>
-            {pagesArray.map(p => {
-                return <span
-                             className={`${s.page} ${props.currentPage === p && s.selectedPage}`}//скленивание двух классов
-                             onClick={(e) => {
-                                 props.onPageChanged(p);
-                             }}>{p}</span>
-            })}
-        </div>
+        <button onClick={getUsers}>Get Users</button>
         {
             props.usersData.map(u => <div key={u.id}>
                     <span>
@@ -51,4 +47,4 @@ let Users = (props) => {
     </div>
 }
 
-export default Users;
+export default UsersFuncComp;
