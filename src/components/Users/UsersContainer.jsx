@@ -1,10 +1,9 @@
 import React from "react";
 import {connect} from "react-redux";
 import {
-    followActionCreator,
-    setCurrentPageActionCreator, setTotalUsersCountActionCreator,
-    setUsersActionCreator, toggleIsFetchingActionCreator,
-    unfollowActionCreator
+    setCurrentPage, setTotalUsersCount,
+    setUsers, toggleIsFetching,
+    followbro, unfollowbro
 } from "../../redux/users-reducer";
 import axios from "axios";
 import Users from "./Users";
@@ -62,7 +61,7 @@ let mapStateToProps = (state) => { //объекты, которая получа
     }
 };
 
-let mapDispatchToProps = (dispatch) => { //колбэки, которая получает компонента UsersFuncComp, которая она может вызвать
+/*let mapDispatchToProps = (dispatch) => { //колбэки, которая получает компонента UsersFuncComp, которая она может вызвать
     return {
         followbro: (userID) => {
             dispatch(followActionCreator(userID));
@@ -83,6 +82,7 @@ let mapDispatchToProps = (dispatch) => { //колбэки, которая пол
             dispatch (toggleIsFetchingActionCreator(isFetching))
         }
     }
-};
+};// код диспатча до рефакторинга в коннекте*/
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer); //"контейнерная" 2 компонента, которая получается с помощью оборачивания connect
+export default connect(mapStateToProps, {followbro, unfollowbro, setUsers, setCurrentPage, setTotalUsersCount,
+    toggleIsFetching})(UsersContainer); //"контейнерная" 2 компонента, которая получается с помощью оборачивания connect

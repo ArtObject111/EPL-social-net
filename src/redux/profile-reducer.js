@@ -1,12 +1,14 @@
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
+const SET_USER_PROFILE = "SET-USER-PROFILE"
 
 let initialState = {
     postsData: [
         {id: 1, message: "Hello, what's your favourite EPL's club?", likesCount: 15},
         {id: 2, message: "I support Aston Willa", likesCount: 7}
     ],
-    newPostText: "shkaf"
+    newPostText: "shkaf",
+    profile: null
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -28,14 +30,19 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 newPostText: action.newText
             };
+        case SET_USER_PROFILE:
+            return {
+                ...state,
+                profile: action.profile //заменили profile stat(а), на profile, который пришел в action
+            };
         default:
             return state;
     }
 }
 
-export const addPostActionCreator = () => ({type: "ADD-POST"})// сокращенная запись
-
-export const updateNewPostTextActionCreator = (postText) => {
+export const addPostActionCreator = () => ({type: "ADD-POST"});// сокращенная запись
+export const setUserProfile = (profile) => ({type: "SET-USER-PROFILE", profile});
+export const updateNewPostTextActionCreator = (postText) => { //старый способ записи
     return {
         type: "UPDATE-NEW-POST-TEXT",
         newText: postText

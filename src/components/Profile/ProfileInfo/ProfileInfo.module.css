@@ -1,3 +1,48 @@
+.banner {
+    width: 100%;
+    border: 0px solid;
+}
+
 .descriptionBlock {
+    position: relative;
+    margin-top:-15%;
     padding: 10px;
+    display: grid;
+    grid-template-columns: 3fr 10fr;
+    width: 58%;
+    border: px solid;
+    border-radius: 15px;
+    background-color: aliceblue;
+    box-shadow:  2px 2px 10px gray;
+}
+
+.descriptionBlock div {
+    padding: 0 0 5px 5px;
+}
+.descriptionBlock img {
+    border-radius: 5%;
+}
+
+.fullName {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.lookingForAJob {
+    text-decoration: none;
+    color: gray;
+}
+
+.contacts {
+    text-decoration: underline;
+}
+
+.lookingForAJob img{
+    padding-left: 5px;
+    width: 20px;
+}
+
+.lookingForAJobDescription {
+    color: gray;
+    font-size: small;
 }

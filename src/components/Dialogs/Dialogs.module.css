@@ -10,6 +10,7 @@
 }
 
 .dialogsItems .dialogItem {
+    border: 0px solid;
     display: grid;
     grid-template-columns: 80px 140px;
 }

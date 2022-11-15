@@ -105,12 +105,12 @@ const usersReducer = (state = initialState, action) => {
     }
 }
 
-export const toggleIsFetchingActionCreator = (isFetching) => ({type: "TOGGLE-IS-FETCHING", isFetching})
-export const followActionCreator = (userID) => ({type: "FOLLOW", userID})// сокращенная запись
-export const unfollowActionCreator = (userID) => ({type: "UNFOLLOW", userID})// сокращенная запись
-export const setUsersActionCreator = (users) => ({type: "SET-USERS", users})
-export const setTotalUsersCountActionCreator = (totalUsers) => ({type: "SET-TOTAL-USERS-COUNT", count: totalUsers})//здесь специально по-разному назвал переменные
-export const setCurrentPageActionCreator = (currentPage) => ({type: "SET-CURRENT-PAGE", currentPage}) //currentPage должен
+export const toggleIsFetching = (isFetching) => ({type: "TOGGLE-IS-FETCHING", isFetching})
+export const followbro = (userID) => ({type: "FOLLOW", userID})// сокращенная запись
+export const unfollowbro = (userID) => ({type: "UNFOLLOW", userID})// сокращенная запись
+export const setUsers = (users) => ({type: "SET-USERS", users})
+export const setTotalUsersCount = (totalUsers) => ({type: "SET-TOTAL-USERS-COUNT", count: totalUsers})//здесь специально по-разному назвал переменные
+export const setCurrentPage = (currentPage) => ({type: "SET-CURRENT-PAGE", currentPage}) //currentPage должен
 //быть равен свойству этого экшена
 //в reducer(е)
 export default usersReducer;
