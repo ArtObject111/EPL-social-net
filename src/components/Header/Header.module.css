@@ -8,3 +8,25 @@
     width: 60px;
     margin:5px;
 }
+
+.loginBlock {
+    float: right;
+    border: 0px solid;
+}
+
+.loginBlock span{
+    float: right;
+    margin-top: 15%;
+    margin-right: 30px;
+    font-size: large;
+    color: white;
+    border: 0px solid;
+}
+
+.loginBlock a {
+    color: white;
+}
+
+.loginBlock img {
+    border-radius: 50%;
+}

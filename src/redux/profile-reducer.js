@@ -2,13 +2,31 @@ const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USER_PROFILE = "SET-USER-PROFILE"
 
+
 let initialState = {
-    postsData: [
+    postsData :[
         {id: 1, message: "Hello, what's your favourite EPL's club?", likesCount: 15},
         {id: 2, message: "I support Aston Willa", likesCount: 7}
     ],
     newPostText: "shkaf",
-    profile: null
+    profile: null,
+    profilesData: {
+        aboutMe: null,
+        contacts: {
+            facebook:null ,
+            website: null,
+            vk: null,
+            twitter: null,
+            instagram: null,
+            youtube: null,
+            github: null,
+            mainLink: null
+        },
+        lookingForAJob: null,
+        lookingForAJobDescription: null,
+        fullName: null,
+        userId: 0
+    }
 }
 
 const profileReducer = (state = initialState, action) => {
