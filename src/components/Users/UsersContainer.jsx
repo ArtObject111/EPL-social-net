@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {
     setCurrentPage, setTotalUsersCount,
     setUsers, toggleIsFetching,
-    followbro, unfollowbro
+    followbro, unfollowbro, toggleFollowingInProgress
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
@@ -45,6 +45,8 @@ class UsersContainer extends React.Component {
                 followbro={this.props.followbro}
                 unfollowbro={this.props.unfollowbro}
                 usersData={this.props.usersData}
+                toggleFollowingInProgress={this.props.toggleFollowingInProgress}
+                followingInProgress={this.props.followingInProgress}
             />
         </>
     }
@@ -56,7 +58,8 @@ let mapStateToProps = (state) => { //объекты, которая получа
         totalUsersCount: state.usersPage.totalUsersCount,
         pageSize: state.usersPage.pageSize,
         currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching
+        isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress
     }
 };
 
@@ -84,4 +87,4 @@ let mapStateToProps = (state) => { //объекты, которая получа
 };// код диспатча до рефакторинга в коннекте*/
 
 export default connect(mapStateToProps, {followbro, unfollowbro, setUsers, setCurrentPage, setTotalUsersCount,
-    toggleIsFetching})(UsersContainer); //"контейнерная" 2 компонента, которая получается с помощью оборачивания connect
+    toggleIsFetching, toggleFollowingInProgress})(UsersContainer); //"контейнерная" 2 компонента, которая получается с помощью оборачивания connect
