@@ -1,35 +1,30 @@
 import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
-import axios from "axios";
-import {setAuthUserData, setAuthUserDescription} from "../../redux/auth-reducer";
+import {setAuthUserAvatar, setAuthUserData} from "../../redux/auth-reducer";
+import {usersAPI} from "../../api/api";
 
 
 class HeaderContainer extends React.Component {
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-            withCredentials: true //второй параметр нужен для привязки кукис
-        })
-            .then(responce => {
-               if (responce.data.resultCode === 0) {
-                   this.props.setAuthUserData(responce.data.data);
-                   axios.get(`https://social-network.samuraijs.com/api/1.0/profile/${this.props.auth.data.id}`)
-                       .then(responce => {
-                           this.props.setAuthUserDescription(responce.data.photos.small)
-                       });
-               }
+        usersAPI.authUser().then(data => {
+               if (data.resultCode === 0) {
+                   this.props.setAuthUserData(data.data)
+                   usersAPI.authUserPhotoAx(data.data.id).then(avatar => { // айдишник берем из data, которую нам вернула setAuthUserData
+                       this.props.setAuthUserAvatar(avatar);
+                   })};
             });
     }
-
     render() {
         return <Header {...this.props}/>
     }
 }
 
-let mapStateToProps = (state) => ({
-    isAuth: state.auth.data.isAuth,
-    login: state.auth.data.login,
-    authUserPhoto: state.auth.authUserPhoto
+let mapStateToProps = (state) => ({ //пропсы передаем в контейнерную компоненту
+    isAuth: state.authUserBro.data.isAuth,
+    login: state.authUserBro.data.login,
+    authUserPhoto: state.authUserBro.authUserPhoto,
+    id: state.authUserBro.data.id
 })
 
-export default connect(mapStateToProps, {setAuthUserData, setAuthUserDescription})(HeaderContainer)
+export default connect(mapStateToProps, {setAuthUserData, setAuthUserAvatar})(HeaderContainer)

@@ -1,5 +1,6 @@
+
 const SET_USER_DATA = "SET-USER-DATA";
-const SET_AUTH_USER_DESCRIPTION = "SET-AUTH-USER-DESCRIPTION";
+const SET_AUTH_USER_AVATAR = "SET-AUTH-USER-AVATAR";
 
 let initialState = {
     data: {
@@ -22,10 +23,10 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 data: {...action.data, isAuth: true}, //...{id, login, email}
             }
-        case SET_AUTH_USER_DESCRIPTION:
+        case SET_AUTH_USER_AVATAR:
             return {
                 ...state,
-                authUserPhoto: action.userPhoto
+                authUserPhoto: action.userAvatar
             }
         default:
             return state;
@@ -33,7 +34,7 @@ const authReducer = (state = initialState, action) => {
 }
 
 export const setAuthUserData = (data) => ({type: "SET-USER-DATA", data});
-export const setAuthUserDescription = (userPhoto) => ({type: "SET-AUTH-USER-DESCRIPTION", userPhoto});
+export const setAuthUserAvatar = (userAvatar) => ({ type: "SET-AUTH-USER-AVATAR", userAvatar});
 
 
 export default authReducer;
