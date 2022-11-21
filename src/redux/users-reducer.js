@@ -104,9 +104,9 @@ const usersReducer = (state = initialState, action) => {
         case TOGGLE_IS_FOLLOWING_IN_PROGRESS:
             return {
                 ...state,
-                followingInProgress: action.isFetching
+                followingInProgress: action.isFetching// если в экшене приходит true, то добавляем id в массив followingInProgress
                     ? [...state.followingInProgress, action.userID]
-                    : [state.followingInProgress.filter(id => id != action.userID)]
+                    : [state.followingInProgress.filter(id => id != action.userID)] //при false удаляем id из массива followingInProgress
             }
 
         default:
@@ -117,7 +117,7 @@ const usersReducer = (state = initialState, action) => {
 export const toggleIsFetching = (isFetching) => ({type: "TOGGLE-IS-FETCHING", isFetching})
 export const toggleFollowingInProgress = (isFetching, userID) => ({type: "TOGGLE-IS-FOLLOWING-IN-PROGRESS", isFetching, userID})
 export const followbro = (userID) => ({type: "FOLLOW", userID})// сокращенная запись
-export const unfollowbro = (userID) => ({type: "UNFOLLOW", userID})// сокращенная запись
+export const unfollowbro = (userID) => ({type: "UNFOLLOW", userID})
 export const setUsers = (users) => ({type: "SET-USERS", users})
 export const setTotalUsersCount = (totalUsers) => ({type: "SET-TOTAL-USERS-COUNT", count: totalUsers})//здесь специально по-разному назвал переменные
 export const setCurrentPage = (currentPage) => ({type: "SET-CURRENT-PAGE", currentPage}) //currentPage должен
