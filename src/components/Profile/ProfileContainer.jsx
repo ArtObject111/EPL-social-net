@@ -1,8 +1,7 @@
 import React from "react";
 import Profile from "./Profile";
-import axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfile} from "../../redux/profile-reducer";
+import {getUserProfileThunkCreator} from "../../redux/profile-reducer";
 import {useLocation, useNavigate, useParams} from "react-router-dom";
 
 class ProfileContainer extends React.Component {
@@ -12,14 +11,15 @@ class ProfileContainer extends React.Component {
     }*/
 
     componentDidMount() {
+
+
         let userId = this.props.router.params.userId;
         if (!userId) {
             userId = 2
-        };
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then(responce => {
-                this.props.setUserProfile(responce.data);
-            });
+        }
+
+        this.props.getUserProfile(userId); //callback, который приходит из connect
+
     }
 
     render() {
@@ -38,6 +38,7 @@ let mapStateToProps = (state) => { //функция, которая приним
 };
 
 //wrapper to use router's v6 hooks in class comp (to use HOC pattern like in router v5) // по документации
+//другими словами прокидываем router = {params} в контейнерную компоненту
 const withRouter = (ProfileContainer) => {
     return (props) => {
         let location = useLocation();
@@ -46,7 +47,7 @@ const withRouter = (ProfileContainer) => {
         return (
             <ProfileContainer
                 {...props}
-                router={{ location, navigate, params }}
+                router={{location, navigate, params}}
             />
         );
     }
@@ -69,4 +70,4 @@ const withRouter = (ProfileContainer) => {
 //по Димычу
 //let WithUrlDataContainerComponent = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, {setUserProfile})(withRouter(ProfileContainer));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect
+export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator})(withRouter(ProfileContainer));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect

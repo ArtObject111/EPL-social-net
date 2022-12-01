@@ -1,3 +1,5 @@
+import {usersAPI} from "../api/api";
+
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USER_PROFILE = "SET-USER-PROFILE"
@@ -58,12 +60,22 @@ const profileReducer = (state = initialState, action) => {
     }
 }
 
-export const addPostActionCreator = () => ({type: "ADD-POST"});// сокращенная запись
-export const setUserProfile = (profile) => ({type: "SET-USER-PROFILE", profile});
+export const addPostActionCreator = () => ({type: ADD_POST});// сокращенная запись
+export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile});
 export const updateNewPostTextActionCreator = (postText) => { //старый способ записи
     return {
-        type: "UPDATE-NEW-POST-TEXT",
+        type: UPDATE_NEW_POST_TEXT,
         newText: postText
+    }
+}
+
+//блок санок
+export const getUserProfileThunkCreator = (userId) => {
+    return (dispatch) => {
+        usersAPI.getUserProfileAx(userId).then(data => {
+            dispatch(setUserProfile(data));
+        });
+
     }
 }
 

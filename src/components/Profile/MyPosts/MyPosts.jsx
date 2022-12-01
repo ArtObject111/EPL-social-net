@@ -14,7 +14,7 @@ const MyPosts = (props) => {
     }
 
     let onPostChange = () => {
-        let postText = newPostElement.current.value;// присваиваем переменной postText, то что лежит в value
+        let postText = newPostElement.current.value;// присваиваем переменной postText, то что лежит в value путем прямого воздействия на элемент
         props.updateNewPostText(postText);
     }
 

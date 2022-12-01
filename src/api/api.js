@@ -23,10 +23,18 @@ export const usersAPI = { //вспомогаьельный объект, сод�
             .then(responce => {
                 return responce.data
             })
-    }, followUser (userId) {
+    },
+    followUser (userId) {
         return instance.post(`follow/` + userId)
             .then(responce => responce.data) //более краткая запись responc(a)
     },
+    getUserProfileAx (userId) {
+        return instance.get(`profile/${userId}`)
+            .then(responce => responce.data)
+    }
+}
+
+export const authAPI = {
     authUser () {
         return instance.get(`auth/me`)
             .then(responce => responce.data)

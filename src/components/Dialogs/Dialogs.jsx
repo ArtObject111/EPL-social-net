@@ -16,11 +16,10 @@ const Dialogs = (props) => {
         props.sendMessage();
     }
 
-    let onMessageChange = () => {
+    let onMessageChange = (e) => {
         let messageText = newMessageElement.current.value;
         props.updateNewMessageText(messageText);
     }
-
 
     return (
         <div className={s.dialogs}>

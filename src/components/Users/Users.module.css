@@ -5,7 +5,7 @@
 
 .selectedPage {
     font-weight: bold;
-    border-bottom: 1px solid;
+    border-bottom: 3px solid;
     padding-bottom: 3px;
 }
 
@@ -15,4 +15,8 @@
 
 .pageNumberBar {
     margin-bottom: 10px;
+}
+
+.coverButton {
+    display: none;
 }

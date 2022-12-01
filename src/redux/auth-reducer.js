@@ -1,3 +1,5 @@
+import {authAPI} from "../api/api";
+import userPhoto from "../assets/images/oval.svg"// полезно для тестирования action(a) SET_AUTH_USER_AVATAR
 
 const SET_USER_DATA = "SET-USER-DATA";
 const SET_AUTH_USER_AVATAR = "SET-AUTH-USER-AVATAR";
@@ -33,8 +35,19 @@ const authReducer = (state = initialState, action) => {
     }
 }
 
-export const setAuthUserData = (data) => ({type: "SET-USER-DATA", data});
-export const setAuthUserAvatar = (userAvatar) => ({ type: "SET-AUTH-USER-AVATAR", userAvatar});
+export const setAuthUserData = (data) => ({type: SET_USER_DATA, data});
+export const setAuthUserAvatar = (userAvatar) => ({ type: SET_AUTH_USER_AVATAR, userAvatar});
 
+export const getAuthUserDataThunkCreator = () => {
+    return (dispatch) => {
+        authAPI.authUser().then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setAuthUserData(data.data))
+                authAPI.authUserPhotoAx(data.data.id).then(avatar => { // айдишник берем из data, которую нам вернула setAuthUserData
+                    dispatch(setAuthUserAvatar(avatar));
+                })};
+        });
+    }
+}
 
 export default authReducer;

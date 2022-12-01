@@ -2,29 +2,47 @@ import React from "react";
 import s from "./Users.module.css";
 import userPhoto from "../../assets/images/user_image.png";
 import {NavLink} from "react-router-dom";
-import {usersAPI} from "../../api/api";
-// ajax запросы
-
 
 let Users = (props) => {
 
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize); //округляем число страниц в большую сторону
-    let pagesArray = [];
-    for (let i = 1; i <= pagesCount; i++) {
-        pagesArray.push(i);
+    let setPageBar = () => {
+        let pageBarElement = props.pageBar.map(pages => {
+            return <span
+                className={`${s.page} ${props.currentPage === pages && s.selectedPage}`}//скленивание двух классов
+                onClick={(e) => {
+                    props.onPageChanged(pages);
+                }}>{pages}</span>
+        })
+        return <>
+            <div className={s.pageNumberBar}>
+                <button disabled={props.pageBar[0] <= 1} onClick={flipBack}>{"<"}</button>
+                {pageBarElement}
+                <button disabled={props.pageBar[props.pageBarLength] >= pagesCount}
+                        onClick={flipNext}>{">"}</button>
+            </div>
+        </>
     }
 
+    let flipNext = () => {
+        let countClick = props.countFlip + 1;
+        let pagesArray = [];
+        for (let i = countClick; i <= props.pageBarLength + countClick && i <= pagesCount; i++) {
+            pagesArray.push(i);
+        }
+        props.flipNext(pagesArray, countClick)
+    }
+    let flipBack = () => {
+        let countClick = props.countFlip - 1;
+        let pagesArray = [];
+        for (let i = countClick; i <= props.pageBarLength + countClick; i++) {
+            pagesArray.push(i);
+        }
+        props.flipBack(pagesArray, countClick)
+    }
 
     return <div>
-        <div className={s.pageNumberBar}>
-            {pagesArray.map(p => {
-                return <span
-                    className={`${s.page} ${props.currentPage === p && s.selectedPage}`}//скленивание двух классов
-                    onClick={(e) => {
-                        props.onPageChanged(p);
-                    }}>{p}</span>
-            })}
-        </div>
+        {setPageBar()}
         {
             props.usersData.map(u => <div key={u.id}>
                     <span>
@@ -35,24 +53,21 @@ let Users = (props) => {
                         </div>
                         <div>
                             {u.followed
-                                ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
-                                    props.toggleFollowingInProgress(true, u.id)
-                                    usersAPI.unfollowUser(u.id).then(data => {
-                                        if (data.resultCode === 0) {
-                                            props.unfollowbro(u.id)
-                                        };
-                                        props.toggleFollowingInProgress(false, u.id)
-                                    });
-                                }}>Unollow</button>
-                                : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick={() => {
-                                    props.toggleFollowingInProgress(true, u.id)
-                                    usersAPI.followUser(u.id).then(data => {
-                                        if (data.resultCode === 0) {
-                                            props.followbro(u.id)
-                                        };
-                                        props.toggleFollowingInProgress(false, u.id)
-                                    });
-                                }}>Follow</button>}
+                                ? <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                          onClick={() => {
+                                              props.unfollowbro(u.id);
+                                              /*props.toggleFollowingInProgress(true, u.id) //код до followBroThunkContainer
+                                              usersAPI.unfollowUser(u.id).then(data => {
+                                                  if (data.resultCode === 0) {
+                                                      props.unfollowbro(u.id)
+                                                  };
+                                                  props.toggleFollowingInProgress(false, u.id)
+                                              });*/
+                                          }}>Unollow</button>
+                                : <button disabled={props.followingInProgress.some(id => id === u.id)}
+                                          onClick={() => {
+                                              props.followbro(u.id);
+                                          }}>Follow</button>}
                         </div>
                     </span>
                 <span>
@@ -68,6 +83,7 @@ let Users = (props) => {
             </div>)
         }
     </div>
+
 }
 
 export default Users;
