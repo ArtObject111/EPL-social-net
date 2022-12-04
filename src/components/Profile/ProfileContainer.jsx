@@ -4,6 +4,7 @@ import {connect} from "react-redux";
 import {getUserProfileThunkCreator} from "../../redux/profile-reducer";
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 
@@ -38,7 +39,7 @@ class ProfileContainer extends React.Component {
     }
 }
 
-let AuthRedirectComponent = withAuthRedirect(ProfileContainer) //вызываем HOC с нужным параметром
+/*let AuthRedirectComponent = withAuthRedirect(ProfileContainer) //вызываем HOC с нужным параметром*/ //код до compose()
 
 let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
     return {
@@ -79,4 +80,12 @@ const withRouter = (ProfileContainer) => {
 //по Димычу
 //let WithUrlDataContainerComponent = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator})(/*AuthRedirectComponent*/withRouter(AuthRedirectComponent));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect
+/*// код до compose()
+export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator})
+(/!*AuthRedirectComponent*!/withRouter(AuthRedirectComponent));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect*/
+
+export default compose(
+    connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator}), // самый нижний слой контейнера
+    withRouter, // средний слой контейнера
+    withAuthRedirect)// самый внешний слой контейнера
+(ProfileContainer);
