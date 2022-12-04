@@ -9,7 +9,7 @@ let initialState = {
         id: null,
         login: null,
         email: null,
-        isAuth: false,
+        isAuth: false
     },
     authUserPhoto: null
     /*messages: [],

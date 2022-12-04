@@ -2,7 +2,8 @@ import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {getUserProfileThunkCreator} from "../../redux/profile-reducer";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
+import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 
 class ProfileContainer extends React.Component {
 
@@ -23,6 +24,12 @@ class ProfileContainer extends React.Component {
     }
 
     render() {
+
+        if (!this.props.isAuth) {
+            alert("You are not authorized")
+            return (<Navigate to={"/login"}/>)
+        }
+
         return (
             <div>
                 <Profile {...this.props} profile={this.props.profile}/>
@@ -31,9 +38,11 @@ class ProfileContainer extends React.Component {
     }
 }
 
+let AuthRedirectComponent = withAuthRedirect(ProfileContainer) //вызываем HOC с нужным параметром
+
 let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
     return {
-        profile: state.profilePage.profile
+        profile: state.profilePage.profile,
     }
 };
 
@@ -70,4 +79,4 @@ const withRouter = (ProfileContainer) => {
 //по Димычу
 //let WithUrlDataContainerComponent = withRouter(ProfileContainer);
 
-export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator})(withRouter(ProfileContainer));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect
+export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator})(/*AuthRedirectComponent*/withRouter(AuthRedirectComponent));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect

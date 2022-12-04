@@ -31,6 +31,7 @@ let Users = (props) => {
             pagesArray.push(i);
         }
         props.flipNext(pagesArray, countClick)
+        props.onPageChanged(props.currentPage + 1)// связываем активную страницу с номером массива pageBar
     }
     let flipBack = () => {
         let countClick = props.countFlip - 1;
@@ -39,6 +40,7 @@ let Users = (props) => {
             pagesArray.push(i);
         }
         props.flipBack(pagesArray, countClick)
+        props.onPageChanged(props.currentPage - 1)// связываем активную страницу с номером массива pageBar
     }
 
     return <div>
