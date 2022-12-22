@@ -12,7 +12,7 @@ import {
 } from "../../redux/users-reducer";
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
 
 class UsersContainer extends React.Component {
 
@@ -117,10 +117,17 @@ let mapStateToProps = (state) => { //объекты, которая получа
     }
 };// код диспатча до рефакторинга в коннекте*/
 
-let withRedirect = withAuthRedirect(UsersContainer)//защитили страницу Users от неавторизованного пользователя м помощью HOC(a)
+/*let withRedirect = withAuthRedirect(UsersContainer)//защитили страницу Users от неавторизованного пользователя м помощью HOC(a)*/
 
-export default connect(mapStateToProps, {
+/*export default connect(mapStateToProps, {// до compose()
     followBroThunkContainer, unfollowBroThunkContainer,
     toggleFollowingInProgress, setPageBar,
     getUsers: getUsersThunkCreator, setCurrentPage: setCurrentPageThunkCreator,
-    setTotalUsersCount, flipNext, flipBack})(withRedirect); //2я "контейнерная" компонента, которая получается с помощью оборачивания connect
+    setTotalUsersCount, flipNext, flipBack})(withRedirect); //2я "контейнерная" компонента, которая получается с помощью оборачивания connect*/
+
+export default compose(connect(mapStateToProps, {
+    followBroThunkContainer, unfollowBroThunkContainer,
+    toggleFollowingInProgress, setPageBar,
+    getUsers: getUsersThunkCreator, setCurrentPage: setCurrentPageThunkCreator,
+    setTotalUsersCount, flipNext, flipBack})
+)(UsersContainer)
