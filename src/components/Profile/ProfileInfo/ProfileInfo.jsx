@@ -1,6 +1,7 @@
 import React from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from "../../common/Preloader/Preloader";
+import ProfileStatus from "./ProfileStatus"
 
 /*{props.profile.lookingForAJob ? <img src={"https://emojio.ru/images/apple-b/2705.png"}/> // это тернарное выражение срабатывало в разметке, а полный условный оператор нет
     : <img src={"https://emoji-uc.akamaized.net/orig/ae/f30b7d0b156dfcbbb5e0d829e52791.png"}/>}*/
@@ -43,9 +44,8 @@ const ProfileInfo = (props) => {
                         <div>{props.profile.contacts.youtube}</div>
                         <div>{props.profile.contacts.github}</div>
                         <div>{props.profile.contacts.mainLink}</div>
+                        <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
                     </div>
-
-                    Avatar+description
                 </div>
             </div>
         </div>

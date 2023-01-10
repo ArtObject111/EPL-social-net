@@ -46,3 +46,8 @@
     color: gray;
     font-size: small;
 }
+
+.statusLabel {
+    font-size: small;
+    color: gray;
+}

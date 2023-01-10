@@ -1,8 +1,9 @@
-import {usersAPI} from "../api/api";
+import {profileAPI} from "../api/api";
 
 const ADD_POST = "ADD-POST";
 const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USER_PROFILE = "SET-USER-PROFILE"
+const SET_STATUS = "SET-STATUS"
 
 
 let initialState = {
@@ -12,6 +13,7 @@ let initialState = {
     ],
     newPostText: "shkaf",
     profile: null,
+    status: "",
     profilesData: {
         aboutMe: null,
         contacts: {
@@ -55,11 +57,17 @@ const profileReducer = (state = initialState, action) => {
                 ...state,
                 profile: action.profile //заменили profile stat(а), на profile, который пришел в action
             };
+        case SET_STATUS:
+            return {
+                ...state,
+                status: action.status
+            }
         default:
             return state;
     }
 }
 
+//блок Action Creators
 export const addPostActionCreator = () => ({type: ADD_POST});// сокращенная запись
 export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile});
 export const updateNewPostTextActionCreator = (postText) => { //старый способ записи
@@ -68,15 +76,31 @@ export const updateNewPostTextActionCreator = (postText) => { //старый с�
         newText: postText
     }
 }
+export const setStatusActionCreator = (status) => ({type: SET_STATUS, status})
 
 //блок санок
 export const getUserProfileThunkCreator = (userId) => {
     return (dispatch) => {
-        usersAPI.getUserProfileAx(userId).then(data => {
+        profileAPI.getUserProfileAx(userId).then(data => {
             dispatch(setUserProfile(data));
         });
 
     }
+}
+
+export const getStatusThunkCreator = (userId) => (dispatch) => {
+    profileAPI.getUserStatus(userId)
+        .then(data => {
+        dispatch(setStatusActionCreator(data))
+    })
+}
+
+export const updateStatusThunkCreator = (status) => (dispatch) => {
+    profileAPI.updateUserStatus(status).then(data => {
+        if (data.resultCode === 0) {
+            dispatch(setStatusActionCreator(status))
+        }
+    })
 }
 
 export default profileReducer;

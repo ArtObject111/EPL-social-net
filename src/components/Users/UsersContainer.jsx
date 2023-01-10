@@ -21,8 +21,8 @@ class UsersContainer extends React.Component {
     }*/
 
     componentDidMount() {
-
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);// вызывает какой-то коллбэк,
+        // вызывает какой-то коллбэк, вызов thunkCreator
+        this.props.getUsers(this.props.currentPage, this.props.pageSize);
 
         let pagesArray = [];
         for (let i = 1; i <= this.props.pageBarLength; i++) {

@@ -1,7 +1,7 @@
 import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getUserProfileThunkCreator} from "../../redux/profile-reducer";
+import {getStatusThunkCreator, getUserProfileThunkCreator, updateStatusThunkCreator} from "../../redux/profile-reducer";
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
 import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
@@ -17,10 +17,11 @@ class ProfileContainer extends React.Component {
 
         let userId = this.props.router.params.userId;
         if (!userId) {
-            userId = 2
+            userId = 26748
         }
 
         this.props.getUserProfile(userId); //callback, который приходит из connect
+        this.props.getUserStatus(userId);
 
     }
 
@@ -33,7 +34,8 @@ class ProfileContainer extends React.Component {
 
         return (
             <div>
-                <Profile {...this.props} profile={this.props.profile}/>
+                <Profile {...this.props} profile={this.props.profile} status={this.props.status}
+                         updateStatus={this.props.updateStatus}/>
             </div>
         )
     }
@@ -44,6 +46,7 @@ class ProfileContainer extends React.Component {
 let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
     return {
         profile: state.profilePage.profile,
+        status: state.profilePage.status
     }
 };
 
@@ -85,7 +88,8 @@ export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCrea
 (/!*AuthRedirectComponent*!/withRouter(AuthRedirectComponent));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect*/
 
 export default compose(
-    connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator}), // самый нижний слой контейнера
+    connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator,
+        getUserStatus: getStatusThunkCreator, updateStatus: updateStatusThunkCreator}), // самый нижний слой контейнера
     withRouter, // средний слой контейнера
     withAuthRedirect)// самый внешний слой контейнера
 (ProfileContainer);

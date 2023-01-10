@@ -1,4 +1,5 @@
-//DAL (Data Acces Layer) -- this is layer to interact with API. Уровень доступа к данным для взаимодействия с API
+//DAL (Data Acces Layer) -- this is layer to interact with API. Уровень доступа к данным для
+// взаимодействия с API
 
 import axios from "axios";
 
@@ -27,11 +28,22 @@ export const usersAPI = { //вспомогаьельный объект, сод�
     followUser (userId) {
         return instance.post(`follow/` + userId)
             .then(responce => responce.data) //более краткая запись responc(a)
-    },
+    }
+}
+
+export const profileAPI = {
     getUserProfileAx (userId) {
         return instance.get(`profile/${userId}`)
             .then(responce => responce.data)
-    }
+    },
+    getUserStatus (userId) {
+        return instance.get(`profile/status/${userId}`)
+            .then(responce => responce.data)
+    },
+    updateUserStatus (status) {
+        return instance.put(`profile/status`, {status: status})
+            .then(responce => responce.data)
+    },
 }
 
 export const authAPI = {
@@ -40,6 +52,7 @@ export const authAPI = {
             .then(responce => responce.data)
     },
     authUserPhotoAx (userId) {
+        //26748
         return instance.get(`profile/${userId}`)
             .then(responce => responce.data.photos.small)
     }

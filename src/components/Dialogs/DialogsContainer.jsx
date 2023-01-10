@@ -30,7 +30,6 @@ import {compose} from "redux";
 }*/ //код до connect(a)
 
 let mapStateToProps = (state) => {
-    debugger
     return {
         dialogsPage: state.dialogsPage
     }

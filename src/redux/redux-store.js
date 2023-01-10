@@ -1,5 +1,5 @@
 import {applyMiddleware, combineReducers, createStore} from "redux";
-import thunkMiddleware from "redux-thunk";// промежуточный уровень, который внедряем в store
+import thunkMiddleware from "redux-thunk";// промежуточный уровень, который внедряем в store для диспатча функции в reducer
 import profileReducer from "./profile-reducer";
 import dialogsReducer from "./dialogs-reducer";
 import usersReducer from "./users-reducer";

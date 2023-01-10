@@ -4,8 +4,8 @@ import userPhoto from "../../assets/images/user_image.png";
 import {NavLink} from "react-router-dom";
 
 let Users = (props) => {
-
-    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize); //округляем число страниц в большую сторону
+    //округляем число страниц в большую сторону для ограничителя длины pageBar
+    let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
     let setPageBar = () => {
         let pageBarElement = props.pageBar.map(pages => {
             return <span
@@ -42,7 +42,6 @@ let Users = (props) => {
         props.flipBack(pagesArray, countClick)
         props.onPageChanged(props.currentPage - 1)// связываем активную страницу с номером массива pageBar
     }
-
     return <div>
         {setPageBar()}
         {
@@ -58,7 +57,8 @@ let Users = (props) => {
                                 ? <button disabled={props.followingInProgress.some(id => id === u.id)}
                                           onClick={() => {
                                               props.unfollowbro(u.id);
-                                              /*props.toggleFollowingInProgress(true, u.id) //код до followBroThunkContainer
+                                              //код до followBroThunkContainer
+                                              /*props.toggleFollowingInProgress(true, u.id)
                                               usersAPI.unfollowUser(u.id).then(data => {
                                                   if (data.resultCode === 0) {
                                                       props.unfollowbro(u.id)
