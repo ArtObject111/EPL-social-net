@@ -1,7 +1,6 @@
 import {profileAPI} from "../api/api";
 
 const ADD_POST = "ADD-POST";
-const UPDATE_NEW_POST_TEXT = "UPDATE-NEW-POST-TEXT";
 const SET_USER_PROFILE = "SET-USER-PROFILE"
 const SET_STATUS = "SET-STATUS"
 
@@ -11,7 +10,6 @@ let initialState = {
         {id: 1, message: "Hello, what's your favourite EPL's club?", likesCount: 15},
         {id: 2, message: "I support Aston Willa", likesCount: 7}
     ],
-    newPostText: "shkaf",
     profile: null,
     status: "",
     profilesData: {
@@ -38,19 +36,13 @@ const profileReducer = (state = initialState, action) => {
         case ADD_POST:
             let newPost = {
                 id: 10,
-                message: state.newPostText,
+                message: action.newPostText,
                 likesCount: 0
             };
-            //state.postsData.push(newPost); //до копирования объекта
             return {
                 ...state,
                 newPostText: "",
                 postsData: [...state.postsData, newPost]
-            };
-        case UPDATE_NEW_POST_TEXT:
-            return {
-                ...state,
-                newPostText: action.newText
             };
         case SET_USER_PROFILE:
             return {
@@ -68,14 +60,8 @@ const profileReducer = (state = initialState, action) => {
 }
 
 //блок Action Creators
-export const addPostActionCreator = () => ({type: ADD_POST});// сокращенная запись
+export const addPostActionCreator = (newPostText) => ({type: ADD_POST, newPostText});// сокращенная запись
 export const setUserProfile = (profile) => ({type: SET_USER_PROFILE, profile});
-export const updateNewPostTextActionCreator = (postText) => { //старый способ записи
-    return {
-        type: UPDATE_NEW_POST_TEXT,
-        newText: postText
-    }
-}
 export const setStatusActionCreator = (status) => ({type: SET_STATUS, status})
 
 //блок санок
