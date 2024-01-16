@@ -2,19 +2,21 @@ import React from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
 import {Field, reduxForm} from "redux-form";
+import {maxLengthCreator, required} from "../../../utils/validators/validators";
+import {FormControl} from "../../common/FromControls/FormControls";
+
+const maxLength10 = maxLengthCreator(10)
+const Textarea = FormControl("textarea")
 
 let AddPostForm = (props) => {
     return (
         <form onSubmit={props.handleSubmit}>
-            <Field component={"textarea"} name={"newPostText"} placeholder={"New post will be here"}/> <br/>
+            <Field component={Textarea} name={"newPostText"} placeholder={"New post will be here"}
+               validate={[required, maxLength10]} />
             <button>Add post</button>
         </form>
     )
 }
-
-// const ReduxPostForm = reduxForm({
-//     form: 'post'
-// }) (AddPostForm)
 
 AddPostForm = reduxForm({
         form: 'post'
@@ -22,18 +24,6 @@ AddPostForm = reduxForm({
 const MyPosts = (props) => {
     let postsElements =
         props.postsData.map(posts => <Post key={posts.id} message={posts.message} likecount={posts.likesCount}/>)
-
-    // let newPostElement = React.createRef();
-    //
-    //
-    // let onAddPost = () => {
-    //     props.addPost();
-    // }
-    //
-    // let onPostChange = () => {
-    //     let postText = newPostElement.current.value;// присваиваем переменной postText, то что лежит в value путем прямого воздействия на элемент
-    //     props.updateNewPostText(postText);
-    // }
 
     const addNewPost = (values) => {
         props.addPost(values.newPostText);
