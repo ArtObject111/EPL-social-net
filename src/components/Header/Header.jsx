@@ -10,9 +10,16 @@ const Header = (props) => {
             return (
                 <>
                     <img src={props.authUserPhoto ? props.authUserPhoto : userPhoto}/>
-                    <span>{props.login}</span>
+                    <span>
+                        {props.login}
+                        <div>
+                            <button onClick={props.logout}>Log out</button>
+                        </div>
+                    </span>
                 </>)
-        } else return <NavLink to={"/login"}>Login</NavLink>
+        }
+
+        return <NavLink to={"/login"}>Login</NavLink>
     }
     return (
         <header className={s.header}>

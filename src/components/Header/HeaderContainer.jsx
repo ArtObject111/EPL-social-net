@@ -1,7 +1,7 @@
 import React from "react";
 import Header from "./Header";
 import {connect} from "react-redux";
-import {getAuthUserDataThunkCreator} from "../../redux/auth-reducer";
+import {getAuthUserDataThunkCreator, logoutTC} from "../../redux/auth-reducer";
 
 
 class HeaderContainer extends React.Component {
@@ -28,4 +28,7 @@ let mapStateToProps = (state) => ({ //пропсы передаем в конт�
     id: state.authUserBro.data.id
 })
 
-export default connect(mapStateToProps, {getAuthUserData: getAuthUserDataThunkCreator})(HeaderContainer)
+export default connect(mapStateToProps, {
+    getAuthUserData: getAuthUserDataThunkCreator,
+    logout: logoutTC
+})(HeaderContainer)

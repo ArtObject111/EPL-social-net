@@ -9,7 +9,7 @@ let initialState = {
         id: null,
         login: null,
         email: null,
-        isAuth: true
+        isAuth: false
     },
     authUserPhoto: null
     /*messages: [],
@@ -23,7 +23,7 @@ const authReducer = (state = initialState, action) => {
         case SET_USER_DATA:
             return {
                 ...state,
-                data: {...action.data, isAuth: true}, //...{id, login, email}
+                data: {...action.loginData}, //copy of {id, login, email, isAuth}
             }
         case SET_AUTH_USER_AVATAR:
             return {
@@ -35,18 +35,38 @@ const authReducer = (state = initialState, action) => {
     }
 }
 
-export const setAuthUserData = (data) => ({type: SET_USER_DATA, data});
+export const setAuthUserData = (id, login, email, isAuth) => ({type: SET_USER_DATA, loginData: {id, login, email, isAuth} });
 export const setAuthUserAvatar = (userAvatar) => ({ type: SET_AUTH_USER_AVATAR, userAvatar});
 
 export const getAuthUserDataThunkCreator = () => {
     return (dispatch) => {
         authAPI.authUser().then(data => {
             if (data.resultCode === 0) {
-                dispatch(setAuthUserData(data.data))
+                const {id, login, email} = data.data
+                dispatch(setAuthUserData(id, login, email, true))
                 authAPI.authUserPhotoAx(data.data.id).then(avatar => { // айдишник берем из data, которую нам вернула setAuthUserData
                     dispatch(setAuthUserAvatar(avatar));
                 })};
         });
+    }
+}
+
+export const loginTC = (email, password, rememberMe) => (dispatch) => {
+        authAPI.login(email, password, rememberMe).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(getAuthUserDataThunkCreator())
+            }
+        })
+    }
+
+export const logoutTC = () => {
+    return (dispatch) => {
+        authAPI.logout()
+            .then(data => {
+            if (data.resultCode === 0) {
+                dispatch(setAuthUserData(null, null, null, false))
+            }
+        })
     }
 }
 

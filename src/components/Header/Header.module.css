@@ -11,16 +11,21 @@
 
 .loginBlock {
     float: right;
-    border: 0px solid;
-}
-
-.loginBlock span{
-    float: right;
-    margin-top: 15%;
-    margin-right: 30px;
+    display: flex;
+    align-items: center;
     font-size: large;
     color: white;
-    border: 0px solid;
+}
+
+.loginBlock span {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.loginBlock button {
+    margin-top: 7px;
 }
 
 .loginBlock a {

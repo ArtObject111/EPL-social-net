@@ -10,7 +10,7 @@ export const withAuthRedirect = (Component) => {
     class RedirectComponent extends React.Component {
         render() {
             if (!this.props.isAuth) {
-                alert("You are not authorized")
+                // alert("You are not authorized")
                 return (<Navigate to={"/login"}/>)
             }
             return <Component {...this.props}/>
