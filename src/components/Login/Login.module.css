@@ -6,3 +6,8 @@
 form div {
     margin-top: 10px;
 }
+
+.formSummaryError {
+    color: red;
+    display: inline-block;
+}

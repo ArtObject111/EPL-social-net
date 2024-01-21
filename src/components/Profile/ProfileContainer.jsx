@@ -8,16 +8,13 @@ import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 
-    /*constructor(props) //эта запись в таком виде идёт по умолчанию
-        super(props);
-    }*/
-
     componentDidMount() {
 
 
         let userId = this.props.router.params.userId;
         if (!userId) {
-            userId = 26748
+
+            userId = this.props.authorizedUserId
         }
 
         this.props.getUserProfile(userId); //callback, который приходит из connect
@@ -46,7 +43,9 @@ class ProfileContainer extends React.Component {
 let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
     return {
         profile: state.profilePage.profile,
-        status: state.profilePage.status
+        status: state.profilePage.status,
+        authorizedUserId: state.authUserBro.data.id,
+        isAuth: state.authUserBro.isAuth,
     }
 };
 

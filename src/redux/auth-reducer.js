@@ -1,5 +1,7 @@
 import {authAPI} from "../api/api";
-import userPhoto from "../assets/images/oval.svg"// полезно для тестирования action(a) SET_AUTH_USER_AVATAR
+import userPhoto from "../assets/images/oval.svg"
+import {stopSubmit} from "redux-form";
+// полезно для тестирования action(a) SET_AUTH_USER_AVATAR
 
 const SET_USER_DATA = "SET-USER-DATA";
 const SET_AUTH_USER_AVATAR = "SET-AUTH-USER-AVATAR";
@@ -55,6 +57,10 @@ export const loginTC = (email, password, rememberMe) => (dispatch) => {
         authAPI.login(email, password, rememberMe).then(data => {
             if (data.resultCode === 0) {
                 dispatch(getAuthUserDataThunkCreator())
+            } else {
+                const message = data.messages.length > 0 ? data.messages[0] : "Some error"
+                const action = stopSubmit("login", {_error: message}) ///AC, который заготовили разработчики redux-form
+                dispatch(action)
             }
         })
     }
