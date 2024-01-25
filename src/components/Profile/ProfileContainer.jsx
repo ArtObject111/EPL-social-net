@@ -3,32 +3,38 @@ import Profile from "./Profile";
 import {connect} from "react-redux";
 import {getStatusThunkCreator, getUserProfileThunkCreator, updateStatusThunkCreator} from "../../redux/profile-reducer";
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
-import {withAuthRedirect} from "../../hoc/withAuthRedirect";
 import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 
     componentDidMount() {
-
-
         let userId = this.props.router.params.userId;
-        if (!userId) {
 
+        if (!userId) {
             userId = this.props.authorizedUserId
+            if (!userId) {
+                return
+            }
         }
 
-        this.props.getUserProfile(userId); //callback, который приходит из connect
-        this.props.getUserStatus(userId);
-
+        this.props.getUserProfile(userId); // callbacks вызываются когда переходим в Мой профиль, будучи авторизованныи
+        this.props.getUserStatus(userId);  // или в профиль другого пользователя, кроме случая
     }
 
+    // componentDidUpdate(prevProps, prevState, snapshot) {
+    //     if (this.props.profile && (this.props.authorizedUserId !== this.props.profile.userId)) {
+    //         this.props.getUserProfile(this.props.authorizedUserId); // callbacks вызываются когда переходим в Мой профиль, будучи авторизованныи
+    //         this.props.getUserStatus(this.props.authorizedUserId);  // или в профиль другого пользователя, кроме случая
+    //     }
+    // }
+
     render() {
+        let userId = this.props.router.params.userId;
 
-        if (!this.props.isAuth) {
-            alert("You are not authorized")
-            return (<Navigate to={"/login"}/>)
+        if (!userId) {
+            userId = this.props.authorizedUserId;
+            if (!userId) return <Navigate to={"/login"}/>
         }
-
         return (
             <div>
                 <Profile {...this.props} profile={this.props.profile} status={this.props.status}
@@ -38,33 +44,22 @@ class ProfileContainer extends React.Component {
     }
 }
 
-/*let AuthRedirectComponent = withAuthRedirect(ProfileContainer) //вызываем HOC с нужным параметром*/ //код до compose()
-
-let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
-    return {
-        profile: state.profilePage.profile,
-        status: state.profilePage.status,
-        authorizedUserId: state.authUserBro.data.id,
-        isAuth: state.authUserBro.isAuth,
-    }
-};
-
 //wrapper to use router's v6 hooks in class comp (to use HOC pattern like in router v5) // по документации
 //другими словами прокидываем router = {params} в контейнерную компоненту
-const withRouter = (ProfileContainer) => {
+const withRouter = (WrappedContainer) => {
     return (props) => {
         let location = useLocation();
         let navigate = useNavigate();
         let params = useParams();
+
         return (
-            <ProfileContainer
+            <WrappedContainer
                 {...props}
                 router={{location, navigate, params}}
             />
         );
     }
 }
-
 /*const TakeParams = (props) => { //комментатор
     return <ProfileContainer
         {...props}
@@ -86,9 +81,17 @@ const withRouter = (ProfileContainer) => {
 export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator})
 (/!*AuthRedirectComponent*!/withRouter(AuthRedirectComponent));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect*/
 
+let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
+    return {
+        profile: state.profilePage.profile,
+        status: state.profilePage.status,
+        authorizedUserId: state.authUserBro.data.id,
+        isAuth: state.authUserBro.isAuth,
+    }
+};
+
 export default compose(
     connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator,
         getUserStatus: getStatusThunkCreator, updateStatus: updateStatusThunkCreator}), // самый нижний слой контейнера
-    withRouter, // средний слой контейнера
-    withAuthRedirect)// самый внешний слой контейнера
+    withRouter)// самый внешний слой контейнера
 (ProfileContainer);

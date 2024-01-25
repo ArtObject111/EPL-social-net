@@ -40,9 +40,9 @@ const authReducer = (state = initialState, action) => {
 export const setAuthUserData = (id, login, email, isAuth) => ({type: SET_USER_DATA, loginData: {id, login, email, isAuth} });
 export const setAuthUserAvatar = (userAvatar) => ({ type: SET_AUTH_USER_AVATAR, userAvatar});
 
-export const getAuthUserDataThunkCreator = () => {
+export const getAuthUserDataTC = () => {
     return (dispatch) => {
-        authAPI.authUser().then(data => {
+        return authAPI.authUser().then(data => {
             if (data.resultCode === 0) {
                 const {id, login, email} = data.data
                 dispatch(setAuthUserData(id, login, email, true))
@@ -56,7 +56,7 @@ export const getAuthUserDataThunkCreator = () => {
 export const loginTC = (email, password, rememberMe) => (dispatch) => {
         authAPI.login(email, password, rememberMe).then(data => {
             if (data.resultCode === 0) {
-                dispatch(getAuthUserDataThunkCreator())
+                dispatch(getAuthUserDataTC())
             } else {
                 const message = data.messages.length > 0 ? data.messages[0] : "Some error"
                 const action = stopSubmit("login", {_error: message}) ///AC, который заготовили разработчики redux-form
