@@ -10,6 +10,10 @@ import {Provider} from "react-redux";
 
 // addPost("I'm Arsenal's player!");
 
+setInterval(() => {
+    store.dispatch({type: "FAKE"})
+}, 1000)
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode> тег - выполняет рендеринг компонентов дважды, чтобы обнаружить любые проблемы

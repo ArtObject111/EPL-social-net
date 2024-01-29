@@ -21,14 +21,9 @@ class ProfileContainer extends React.Component {
         this.props.getUserStatus(userId);  // или в профиль другого пользователя, кроме случая
     }
 
-    // componentDidUpdate(prevProps, prevState, snapshot) {
-    //     if (this.props.profile && (this.props.authorizedUserId !== this.props.profile.userId)) {
-    //         this.props.getUserProfile(this.props.authorizedUserId); // callbacks вызываются когда переходим в Мой профиль, будучи авторизованныи
-    //         this.props.getUserStatus(this.props.authorizedUserId);  // или в профиль другого пользователя, кроме случая
-    //     }
-    // }
-
     render() {
+        // console.log("render profile")
+
         let userId = this.props.router.params.userId;
 
         if (!userId) {
@@ -82,6 +77,7 @@ export default connect(mapStateToProps, {getUserProfile: getUserProfileThunkCrea
 (/!*AuthRedirectComponent*!/withRouter(AuthRedirectComponent));//оборачиваем контейнерную компоненту ещё одной компонентой с помощью connect*/
 
 let mapStateToProps = (state) => { //функция, которая принимает state целиком, а возвращает только те данные, которые нужны dump компоненте
+    // console.log("mapStateToProps profile")
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,

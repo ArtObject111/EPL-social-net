@@ -13,15 +13,19 @@ import {
 import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import {compose} from "redux";
+import {
+    getCountBack, getCountFlip,
+    getCountNext,
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching, getPageBar, getPageBarLength,
+    getPageSize,
+    getTotalUsersCount, getUsers
+} from "../../redux/users-selectors";
 
 class UsersContainer extends React.Component {
 
-    /*constructor(props) //эта запись в таком виде идёт по умолчанию для классов
-        super(props);
-    }*/
-
     componentDidMount() {
-        // вызывает какой-то коллбэк, вызов thunkCreator
         this.props.getUsers(this.props.currentPage, this.props.pageSize);
 
         let pagesArray = [];
@@ -29,32 +33,14 @@ class UsersContainer extends React.Component {
             pagesArray.push(i);
         }
         this.props.setPageBar(pagesArray)
-
-        //this.props.getUsersThunkCreator();//вызвываем функцию, которая возвращает функцию, делающую ajax запрос и передающую данные в store
-
-        /*this.props.toggleIsFetching(true); // код до getUsersThunkCreator
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => { //ajax запрос
-                this.props.toggleIsFetching(false);
-                this.props.setUsers(data.items);
-                this.props.setTotalUsersCount(data.totalCount);
-            });*/
     }
 
     onPageChanged = (pageNumber) => {
-
-
         this.props.setCurrentPage(pageNumber, this.props.pageSize); //callback, который приходит из connect
-
-        /*this.props.toggleIsFetching(true);//p - номер страницы
-        this.props.setCurrentPage(pageNumber);
-        usersAPI.getUsers(pageNumber, this.props.pageSize)
-            .then(data => { //data вместо responce, т.к мы передали в api.js только те данные, кот. нужны компоненте
-                this.props.toggleIsFetching(false);
-                this.props.setUsers(data.items)
-            });*/
     }
 
     render() {
+        console.log("render users")
         return <>
             {this.props.isFetching ? <Preloader /> : null}
             <Users
@@ -76,54 +62,40 @@ class UsersContainer extends React.Component {
             />
         </>
     }
-} //"контейнерная" компонента, которая делает ajax запросы
+}
+
+// let mapStateToProps = (state) => { //объекты, которая получает компонента UsersFuncComp
+//     return {
+//         usersData: state.usersPage.usersData,
+//         totalUsersCount: state.usersPage.totalUsersCount,
+//         pageSize: state.usersPage.pageSize,
+//         currentPage: state.usersPage.currentPage,
+//         isFetching: state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress,
+//         pageBarLength: state.usersPage.pageBarLength,
+//         pageBar: state.usersPage.pageBar,
+//         countNext: state.usersPage.countNext,
+//         countBack: state.usersPage.countBack,
+//         countFlip: state.usersPage.countFlip
+//     }
+// };
 
 let mapStateToProps = (state) => { //объекты, которая получает компонента UsersFuncComp
+    console.log("mapStateToProps users")
     return {
-        usersData: state.usersPage.usersData,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        pageSize: state.usersPage.pageSize,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress,
-        pageBarLength: state.usersPage.pageBarLength,
-        pageBar: state.usersPage.pageBar,
-        countNext: state.usersPage.countNext,
-        countBack: state.usersPage.countBack,
-        countFlip: state.usersPage.countFlip
+        usersData: getUsers(state),
+        totalUsersCount: getTotalUsersCount(state),
+        pageSize: getPageSize(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
+        pageBarLength: getPageBarLength(state),
+        pageBar: getPageBar(state),
+        countNext: getCountNext(state),
+        countBack: getCountBack(state),
+        countFlip: getCountFlip(state)
     }
 };
-
-/*let mapDispatchToProps = (dispatch) => { //колбэки, которая получает компонента UsersFuncComp, которая она может вызвать
-    return {
-        followbro: (userID) => {
-            dispatch(followActionCreator(userID));
-        },
-        unfollowbro: (userID) => {
-            dispatch(unfollowActionCreator(userID));
-        },
-        setUsers: (users) => {
-            dispatch(setUsersActionCreator(users));
-        },
-        setCurrentPage: (pageNumber) => {
-            dispatch(setCurrentPageActionCreator(pageNumber));
-        },
-        setTotalUsersCount: (totalUsers) => {
-            dispatch(setTotalUsersCountActionCreator(totalUsers))
-        },
-        toggleIsFetching: (isFetching) => {
-            dispatch (toggleIsFetchingActionCreator(isFetching))
-        }
-    }
-};// код диспатча до рефакторинга в коннекте*/
-
-/*let withRedirect = withAuthRedirect(UsersContainer)//защитили страницу Users от неавторизованного пользователя м помощью HOC(a)*/
-
-/*export default connect(mapStateToProps, {// до compose()
-    followBroThunkContainer, unfollowBroThunkContainer,
-    toggleFollowingInProgress, setPageBar,
-    getUsers: getUsersThunkCreator, setCurrentPage: setCurrentPageThunkCreator,
-    setTotalUsersCount, flipNext, flipBack})(withRedirect); //2я "контейнерная" компонента, которая получается с помощью оборачивания connect*/
 
 export default compose(connect(mapStateToProps, {
     followBroThunkContainer, unfollowBroThunkContainer,
