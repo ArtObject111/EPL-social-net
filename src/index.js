@@ -10,9 +10,9 @@ import {Provider} from "react-redux";
 
 // addPost("I'm Arsenal's player!");
 
-setInterval(() => {
-    store.dispatch({type: "FAKE"})
-}, 1000)
+// setInterval(() => {
+//     store.dispatch({type: "FAKE"})
+// }, 1000)
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

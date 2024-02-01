@@ -1,4 +1,4 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import s from "./MyPosts.module.css";
 import Post from "./Post/Post";
 import {Field, reduxForm} from "redux-form";
@@ -21,26 +21,30 @@ let AddPostForm = (props) => {
 AddPostForm = reduxForm({
         form: 'post'
 })(AddPostForm)
-const MyPosts = (props) => {
-    let postsElements =
-        props.postsData.map(posts => <Post key={posts.id} message={posts.message} likecount={posts.likesCount}/>)
 
-    const addNewPost = (values) => {
-        props.addPost(values.newPostText);
+class MyPosts extends PureComponent{
+
+    addNewPost = (values) => {
+        this.props.addPost(values.newPostText);
     }
 
-    return (
-        <div className={s.postsBlock}>
-            <h3>My posts</h3>
-            <div>
-                Write new post <br/>
-                <AddPostForm onSubmit={addNewPost}/>
-            </div>
+    render () {
+        let postsElements =
+            this.props.postsData.map(posts => <Post key={posts.id} message={posts.message} likecount={posts.likesCount}/>)
+
+        return (
+            <div className={s.postsBlock}>
+                <h3>My posts</h3>
+                <div>
+                    Write new post <br/>
+                    <AddPostForm onSubmit={this.addNewPost}/>
+                </div>
                 <div>
                     {postsElements}
                 </div>
             </div>
         )
     }
+}
 
 export default MyPosts;

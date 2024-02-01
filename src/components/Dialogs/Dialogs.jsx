@@ -25,7 +25,7 @@ AddMessageForm = reduxForm ({
     form: 'message'
 }) (AddMessageForm)
 
-const Dialogs = (props) => {
+const Dialogs = React.memo((props) => {
 
     let dialogsElements = props.dialogsPage.dialogsData.map(dialogs =>
         <DialogItem name={dialogs.name} id={dialogs.id}/>);
@@ -47,6 +47,6 @@ const Dialogs = (props) => {
             </div>
         </div>
     )
-}
+})
 
 export default Dialogs;

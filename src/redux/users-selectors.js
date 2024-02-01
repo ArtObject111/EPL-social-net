@@ -5,7 +5,6 @@ const getUsersPrimitiveSelector = (state) => {
 }
 
 export const getUsers = createSelector( getUsersPrimitiveSelector, (users) => {
-    debugger
     return users.filter( u => true);
 } )
 

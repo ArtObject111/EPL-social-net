@@ -3,7 +3,7 @@
 
 import axios from "axios";
 
-const instance = axios.create({ //переменная instanse для передачм параметров в axios
+const instance = axios.create({ //переменная instance для передачм параметров в axios
     withCredentials:true, //параметр нужен для привязки cookies
     baseURL: `https://social-network.samuraijs.com/api/1.0/`, //базовый URL
     headers: {

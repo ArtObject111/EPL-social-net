@@ -40,7 +40,7 @@ class UsersContainer extends React.Component {
     }
 
     render() {
-        console.log("render users")
+        // console.log("render users")
         return <>
             {this.props.isFetching ? <Preloader /> : null}
             <Users
@@ -81,7 +81,7 @@ class UsersContainer extends React.Component {
 // };
 
 let mapStateToProps = (state) => { //объекты, которая получает компонента UsersFuncComp
-    console.log("mapStateToProps users")
+    // console.log("mapStateToProps users")
     return {
         usersData: getUsers(state),
         totalUsersCount: getTotalUsersCount(state),
