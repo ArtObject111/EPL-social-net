@@ -1,4 +1,5 @@
 import {usersAPI} from "../api/api";
+import {updateObjectInArray} from "../utils/object-helpers";
 
 const FOLLOW = "FOLLOW";
 const UNFOLLOW = "UNFOLLOW";
@@ -62,32 +63,28 @@ let initialState = {
             location: {city: "Sao Paulo", country: "Brazil"}
         },*/
     ],
-    fake: 10
+    fake: 0
 }
 
 const usersReducer = (state = initialState, action) => {
     switch (action.type) {
-        // case "FAKE": return {...state, fake: state.fake + 1}
+        case "FAKE": return {...state, fake: state.fake + 1}
         case FOLLOW:
             return {
                 ...state,
-                usersData: state.usersData.map(u => {
-                    if (u.id === action.userID) {
-                        return {...u, followed: true}
-                    };
-                    return u;
-                })
+                usersData: updateObjectInArray(state.usersData, action.userID, "id", {followed: true})
+                // usersData: state.usersData.map(u => { //код до object-helpers
+                //     if (u.id === action.userID) {
+                //         return {...u, followed: true}
+                //     }
+                //     return u;
+                // })
             };
 
         case UNFOLLOW:
             return {
                 ...state,
-                usersData: state.usersData.map(u => {
-                    if (u.id === action.userID) {
-                        return {...u, followed: false}
-                    };
-                    return u;
-                })
+                usersData: updateObjectInArray(state.usersData, action.userID, "id", {followed: false})
             };
 
         case SET_USERS:
@@ -154,49 +151,40 @@ export const setCurrentPage = (currentPageNumber) => ({type: SET_CURRENT_PAGE, c
 //быть равен свойству этого экшена
 //в reducer(е)
 
-
 //блок thunkCreators
-export const getUsersThunkCreator = (currentPage, pageSize) => { //- это thunkCreator
-    return (dispatch) => { //- это thunk
-        dispatch(toggleIsFetching(true));
-        usersAPI.getUsers(currentPage, pageSize).then(data => { //ajax запрос
-            dispatch(toggleIsFetching(false));
-            dispatch(setUsers(data.items));
-            dispatch(setTotalUsersCount(data.totalCount));
-        });
-    }
-}
-
-export const setCurrentPageThunkCreator = (pageNumber, pageSize) => (dispatch) => {
+export const getUsersThunkCreator = (currentPage, pageSize) => async (dispatch) => { //- это thunk
     dispatch(toggleIsFetching(true));
-    dispatch(setCurrentPage(pageNumber));
-    usersAPI.getUsers(pageNumber, pageSize).then(data => { //ajax запрос
+    const data = await usersAPI.getUsers(currentPage, pageSize);
         dispatch(toggleIsFetching(false));
         dispatch(setUsers(data.items));
-    });
+        dispatch(setTotalUsersCount(data.totalCount));
 }
 
-export const followBroThunkContainer = (userID) => { //thunk - функция, которая диспатчит в себе обычных экшенов
-    return (dispatch) => {
-        dispatch(toggleFollowingInProgress(true, userID))
-        usersAPI.followUser(userID).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(followBroSuccess(userID))
-            };
-            dispatch(toggleFollowingInProgress(false, userID))
-        });
-    }
-
+export const setCurrentPageThunkCreator = (pageNumber, pageSize) => async (dispatch) => {
+    dispatch(toggleIsFetching(true));
+    dispatch(setCurrentPage(pageNumber));
+    const data = await usersAPI.getUsers(pageNumber, pageSize);
+    dispatch(toggleIsFetching(false));
+    dispatch(setUsers(data.items));
 }
 
-export const unfollowBroThunkContainer = (userID) => (dispatch) => {
-        dispatch(toggleFollowingInProgress(true, userID))
-        usersAPI.unfollowUser(userID).then(data => {
-            if (data.resultCode === 0) {
-                dispatch(unfollowBroSuccess(userID))
-            };
-            dispatch(toggleFollowingInProgress(false, userID))
-        });
+const followUnfollowFlow = async (dispatch, userID, apiMethod, actionCreator) => {
+    dispatch(toggleFollowingInProgress(true, userID))
+    const data = await apiMethod(userID)
+    if (data.resultCode === 0) {
+        dispatch(actionCreator(userID))
     }
+    dispatch(toggleFollowingInProgress(false, userID))
+}
+
+export const followBroThunkContainer = (userID) => async (dispatch) => {
+    let apiMethod = usersAPI.followUser.bind(usersAPI);
+    await followUnfollowFlow(dispatch, userID, apiMethod, followBroSuccess)
+}
+
+export const unfollowBroThunkContainer = (userID) => async (dispatch) => {
+    let apiMethod = usersAPI.unfollowUser.bind(usersAPI);
+    await followUnfollowFlow(dispatch, userID, apiMethod, unfollowBroSuccess)
+}
 
 export default usersReducer;

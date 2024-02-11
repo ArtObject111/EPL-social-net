@@ -15,12 +15,12 @@ class ProfileStatus extends React.Component {
             editMode: true
         })
 
-        this.state.editMode && (
+        if (this.state.editMode) {
             this.setState({
                 editMode: false
             })
-        )
-        this.props.updateStatus(this.state.status)
+            this.props.updateStatus(this.state.status)
+        }
     }
 
     onStatusChange = (e) => {
@@ -41,7 +41,7 @@ class ProfileStatus extends React.Component {
     render() {
         return (
             <>
-                <span className={s.statusLabel}>Status: </span>
+                <div className={s.statusLabel}>Status: </div>
                 {!this.state.editMode &&
                     <div>
                         <span onClick={this.activateEditMode}>{this.props.status || "---"}</span>

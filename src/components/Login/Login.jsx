@@ -1,6 +1,6 @@
 import React from "react";
-import {Field, reduxForm} from "redux-form";
-import {FormControl} from "../common/FromControls/FormControls";
+import {reduxForm} from "redux-form";
+import {CreateField, FormControl} from "../common/FromControls/FormControls";
 import {maxLengthCreator, required} from "../../utils/validators/validators";
 import s from "./Login.module.css"
 import {connect} from "react-redux";
@@ -10,22 +10,19 @@ import {Navigate} from "react-router-dom";
 const maxLength30 = maxLengthCreator(30)
 const Input = FormControl("input")
 
-const LoginForm = (props) => {
+const LoginForm = ({handleSubmit, error}) => {
     return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                <Field placeholder={"Email"} name = {"email"} component = {Input}
-                       validate={[required, maxLength30]}/>
-            </div>
-            <div>
-                <Field placeholder={"Password"} name = {"password"} component = {Input}
-                       type={"password"}  validate={[required, maxLength30]}/>
-            </div>
-            <div>
-                <Field component = {"input"} name = {"rememberMe"} type={"checkbox"} /> remember me
-            </div>
-            {!!props.error&& <div className={s.formSummaryError}>
-                {props.error}
+        <form onSubmit={handleSubmit}>
+                {CreateField("Email", "email", [required, maxLength30], Input)}
+                {/*<Field placeholder={"Email"} name = {"email"} component = {Input}*/}
+                {/*       validate={[required, maxLength30]}/>*/}
+                {CreateField("Password", "password", [required, maxLength30], Input, {type: "password"})}
+                {/*<Field placeholder={"Password"} name = {"password"} component = {Input}*/}
+                {/*       type={"password"}  validate={[required, maxLength30]}/>*/}
+                {CreateField(null, "rememberMe", null, "input", {type: "checkbox"}, "remember me")}
+                {/*<Field component = {"input"} name = {"rememberMe"} type={"checkbox"} /> remember me*/}
+            {!!error&& <div className={s.formSummaryError}>
+                {error}
             </div>}
             <div>
                 <button>Login</button>

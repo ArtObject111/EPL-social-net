@@ -26,13 +26,14 @@ import {
 class UsersContainer extends React.Component {
 
     componentDidMount() {
-        this.props.getUsers(this.props.currentPage, this.props.pageSize);
+        let {currentPage, pageSize, pageBarLength, setPageBar} = this.props
+        this.props.getUsers(currentPage, pageSize);
 
         let pagesArray = [];
-        for (let i = 1; i <= this.props.pageBarLength; i++) {
+        for (let i = 1; i <= pageBarLength; i++) {
             pagesArray.push(i);
         }
-        this.props.setPageBar(pagesArray)
+        setPageBar(pagesArray)
     }
 
     onPageChanged = (pageNumber) => {
@@ -40,7 +41,6 @@ class UsersContainer extends React.Component {
     }
 
     render() {
-        // console.log("render users")
         return <>
             {this.props.isFetching ? <Preloader /> : null}
             <Users
@@ -49,8 +49,8 @@ class UsersContainer extends React.Component {
                 pageBarLength={this.props.pageBarLength}
                 currentPage={this.props.currentPage}
                 onPageChanged={this.onPageChanged}
-                followbro={this.props.followBroThunkContainer}
-                unfollowbro={this.props.unfollowBroThunkContainer}
+                followBro={this.props.followBroThunkContainer}
+                unfollowBro={this.props.unfollowBroThunkContainer}
                 usersData={this.props.usersData}
                 followingInProgress={this.props.followingInProgress}
                 pageBar={this.props.pageBar}
@@ -64,24 +64,7 @@ class UsersContainer extends React.Component {
     }
 }
 
-// let mapStateToProps = (state) => { //объекты, которая получает компонента UsersFuncComp
-//     return {
-//         usersData: state.usersPage.usersData,
-//         totalUsersCount: state.usersPage.totalUsersCount,
-//         pageSize: state.usersPage.pageSize,
-//         currentPage: state.usersPage.currentPage,
-//         isFetching: state.usersPage.isFetching,
-//         followingInProgress: state.usersPage.followingInProgress,
-//         pageBarLength: state.usersPage.pageBarLength,
-//         pageBar: state.usersPage.pageBar,
-//         countNext: state.usersPage.countNext,
-//         countBack: state.usersPage.countBack,
-//         countFlip: state.usersPage.countFlip
-//     }
-// };
-
-let mapStateToProps = (state) => { //объекты, которая получает компонента UsersFuncComp
-    // console.log("mapStateToProps users")
+let mapStateToProps = (state) => { //объекты, которая получает компонента UsersContainer
     return {
         usersData: getUsers(state),
         totalUsersCount: getTotalUsersCount(state),

@@ -1,12 +1,9 @@
 import React from 'react';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import store from "./redux/redux-store";
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
-import {BrowserRouter} from "react-router-dom";
-import {Provider} from "react-redux";
+import {MainApp} from './App';
 
 // addPost("I'm Arsenal's player!");
 
@@ -18,11 +15,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode> тег - выполняет рендеринг компонентов дважды, чтобы обнаружить любые проблемы
     //    кодом и предупредить о них (рекомендуется на стадии dev, но отключается на стадии production)
-    <BrowserRouter>
-        <Provider store={store}>
-            <App/>
-        </Provider>
-    </BrowserRouter>
+            <MainApp/>
     // </React.StrictMode>
 )
 
