@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/EPL-social-net/static/css/main.b21f66d3.css",
+    "main.js": "/EPL-social-net/static/js/main.ca55032a.js",
+    "static/css/700.98862d1a.chunk.css": "/EPL-social-net/static/css/700.98862d1a.chunk.css",
+    "static/js/700.ecb7f933.chunk.js": "/EPL-social-net/static/js/700.ecb7f933.chunk.js",
+    "static/css/698.4678dd72.chunk.css": "/EPL-social-net/static/css/698.4678dd72.chunk.css",
+    "static/js/698.cbbfc749.chunk.js": "/EPL-social-net/static/js/698.cbbfc749.chunk.js",
+    "static/js/787.09e24b3f.chunk.js": "/EPL-social-net/static/js/787.09e24b3f.chunk.js",
+    "static/media/banner-picture.png": "/EPL-social-net/static/media/banner-picture.d55c92fa3dd7b1a28758.png",
+    "static/media/user_image.png": "/EPL-social-net/static/media/user_image.bb5a347c51a9567ef457.png",
+    "static/media/ball-triangle.svg": "/EPL-social-net/static/media/ball-triangle.1ae749f6aa35398a8a268524750d5015.svg",
+    "index.html": "/EPL-social-net/index.html",
+    "static/media/oval.svg": "/EPL-social-net/static/media/oval.f8e163e50cb694029c77cbe052e6fce5.svg",
+    "main.b21f66d3.css.map": "/EPL-social-net/static/css/main.b21f66d3.css.map",
+    "main.ca55032a.js.map": "/EPL-social-net/static/js/main.ca55032a.js.map",
+    "700.98862d1a.chunk.css.map": "/EPL-social-net/static/css/700.98862d1a.chunk.css.map",
+    "700.ecb7f933.chunk.js.map": "/EPL-social-net/static/js/700.ecb7f933.chunk.js.map",
+    "698.4678dd72.chunk.css.map": "/EPL-social-net/static/css/698.4678dd72.chunk.css.map",
+    "698.cbbfc749.chunk.js.map": "/EPL-social-net/static/js/698.cbbfc749.chunk.js.map",
+    "787.09e24b3f.chunk.js.map": "/EPL-social-net/static/js/787.09e24b3f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.b21f66d3.css",
+    "static/js/main.ca55032a.js"
+  ]
+}
