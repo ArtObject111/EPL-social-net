@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/epl-social-net/static/css/main.b21f66d3.css",
-    "main.js": "/epl-social-net/static/js/main.3539b27a.js",
+    "main.js": "/epl-social-net/static/js/main.aff230bf.js",
     "static/css/700.98862d1a.chunk.css": "/epl-social-net/static/css/700.98862d1a.chunk.css",
     "static/js/700.ecb7f933.chunk.js": "/epl-social-net/static/js/700.ecb7f933.chunk.js",
     "static/css/698.4678dd72.chunk.css": "/epl-social-net/static/css/698.4678dd72.chunk.css",
@@ -13,7 +13,7 @@
     "index.html": "/epl-social-net/index.html",
     "static/media/oval.svg": "/epl-social-net/static/media/oval.f8e163e50cb694029c77cbe052e6fce5.svg",
     "main.b21f66d3.css.map": "/epl-social-net/static/css/main.b21f66d3.css.map",
-    "main.3539b27a.js.map": "/epl-social-net/static/js/main.3539b27a.js.map",
+    "main.aff230bf.js.map": "/epl-social-net/static/js/main.aff230bf.js.map",
     "700.98862d1a.chunk.css.map": "/epl-social-net/static/css/700.98862d1a.chunk.css.map",
     "700.ecb7f933.chunk.js.map": "/epl-social-net/static/js/700.ecb7f933.chunk.js.map",
     "698.4678dd72.chunk.css.map": "/epl-social-net/static/css/698.4678dd72.chunk.css.map",
@@ -22,6 +22,6 @@
   },
   "entrypoints": [
     "static/css/main.b21f66d3.css",
-    "static/js/main.3539b27a.js"
+    "static/js/main.aff230bf.js"
   ]
 }
