@@ -1,13 +1,15 @@
 import React from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from "../../common/Preloader/Preloader";
+import bannerPhoto from "../../../assets/images/banner-picture.png"
+import userPhoto from "../../../assets/images/user_image.png"
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
-import ProfileStatus from "./ProfileStatus";
 
 /*{props.profile.lookingForAJob ? <img src={"https://emojio.ru/images/apple-b/2705.png"}/> // это тернарное выражение срабатывало в разметке, а полный условный оператор нет
     : <img src={"https://emoji-uc.akamaized.net/orig/ae/f30b7d0b156dfcbbb5e0d829e52791.png"}/>}*/
 
 const ProfileInfo = (props) => {
+
     if (!props.profile) {
         return <Preloader/>
     }
@@ -26,15 +28,23 @@ const ProfileInfo = (props) => {
         );
     }}
 
+    const updateUserPhoto = (e) => {
+        e.target.files[0] && props.updatePhoto(e.target.files[0])
+    }
+
     return (
         <div>
             <div className={s.banner}>
-                <img className={s.banner} src="https://w7.pngwing.com/pngs/892/488/png-transparent-green-grass-soccer-field-background-green-lawn-football-field.png"/>
+                <img alt={"Profile"} className={s.banner} src={bannerPhoto}/>
                 <div className={s.descriptionBlock}>
-                    <img src={props.profile.photos.large}/>
+                    <div className={s.profilePhoto}>
+                        <img alt={"User"} src={props.profile.photos.large || userPhoto}/>
+                        {props.isOwner && <input type="file" onChange={updateUserPhoto}/>}
+                    </div>
                     <div className={s.profileInfo}>
                         <div className={s.fullName}>{props.profile.fullName}</div>
-                        <div>{props.profile.aboutMe}</div><br/>
+                        <div>{props.profile.aboutMe}</div>
+                        <br/>
                         {setSymbol()}
                         <div className={s.lookingForAJobDescription}>{props.profile.lookingForAJobDescription}</div>
                         <div className={s.contacts}>Контакты:</div>
@@ -46,9 +56,14 @@ const ProfileInfo = (props) => {
                         <div>{props.profile.contacts.youtube}</div>
                         <div>{props.profile.contacts.github}</div>
                         <div>{props.profile.contacts.mainLink}</div>
-                        <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>
-                    </div>
+                        {props.isOwner ?
+                            <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/> :
+                            <>
+                                <span className={s.statusLabel}>Status: </span>
+                                <div>{props.status || "---"}</div>
+                            </>}
                 </div>
+            </div>
             </div>
         </div>
     )

@@ -1,13 +1,18 @@
 import React from "react";
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getStatusThunkCreator, getUserProfileThunkCreator, updateStatusThunkCreator} from "../../redux/profile-reducer";
+import {
+    getStatusThunkCreator,
+    getUserProfileThunkCreator,
+    updatePhotoThunkCreator,
+    updateStatusThunkCreator
+} from "../../redux/profile-reducer";
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
 import {compose} from "redux";
 
 class ProfileContainer extends React.Component {
 
-    componentDidMount() {
+    refreshProfile = () => {
         let userId = this.props.router.params.userId;
 
         if (!userId) {
@@ -20,10 +25,17 @@ class ProfileContainer extends React.Component {
         this.props.getUserProfile(userId); // callbacks вызываются когда переходим в Мой профиль, будучи авторизованныи
         this.props.getUserStatus(userId);  // или в профиль другого пользователя, кроме случая
     }
+    componentDidMount() {
+        this.refreshProfile()
+    }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.router.params.userId !== prevProps.router.params.userId) {
+            this.refreshProfile()
+        }
+    }
 
     render() {
-        // console.log("render profile")
-
         let userId = this.props.router.params.userId;
 
         if (!userId) {
@@ -32,8 +44,13 @@ class ProfileContainer extends React.Component {
         }
         return (
             <div>
-                <Profile {...this.props} profile={this.props.profile} status={this.props.status}
-                         updateStatus={this.props.updateStatus}/>
+                <Profile {...this.props}
+                         isOwner={!this.props.router.params.userId}
+                         profile={this.props.profile}
+                         status={this.props.status}
+                         updateStatus={this.props.updateStatus}
+                         updatePhoto={this.props.updatePhoto}
+                    />
             </div>
         )
     }
@@ -81,13 +98,17 @@ let mapStateToProps = (state) => { //функция, которая приним
     return {
         profile: state.profilePage.profile,
         status: state.profilePage.status,
+        userPhoto: state.profilePage.userPhoto,
         authorizedUserId: state.authUserBro.data.id,
-        isAuth: state.authUserBro.isAuth,
+        isAuth: state.authUserBro.isAuth
     }
 };
 
 export default compose(
-    connect(mapStateToProps, {getUserProfile: getUserProfileThunkCreator,
-        getUserStatus: getStatusThunkCreator, updateStatus: updateStatusThunkCreator}), // самый нижний слой контейнера
+    connect(mapStateToProps, {
+        getUserProfile: getUserProfileThunkCreator,
+        getUserStatus: getStatusThunkCreator,
+        updateStatus: updateStatusThunkCreator,
+        updatePhoto: updatePhotoThunkCreator}), // самый нижний слой контейнера
     withRouter)// самый внешний слой контейнера
 (ProfileContainer);

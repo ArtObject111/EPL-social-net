@@ -23,6 +23,11 @@
     border-radius: 5%;
 }
 
+.profilePhoto img{
+    width: 300px;
+    height: 300px;
+}
+
 .fullName {
     font-size: x-large;
     font-weight: bold;
