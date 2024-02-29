@@ -5,6 +5,7 @@ import {
     getStatusThunkCreator,
     getUserProfileThunkCreator,
     updatePhotoThunkCreator,
+    updateProfileThunkCreator,
     updateStatusThunkCreator
 } from "../../redux/profile-reducer";
 import {Navigate, useLocation, useNavigate, useParams} from "react-router-dom";
@@ -50,6 +51,7 @@ class ProfileContainer extends React.Component {
                          status={this.props.status}
                          updateStatus={this.props.updateStatus}
                          updatePhoto={this.props.updatePhoto}
+                         updateProfile={this.props.updateProfile}
                     />
             </div>
         )
@@ -109,6 +111,7 @@ export default compose(
         getUserProfile: getUserProfileThunkCreator,
         getUserStatus: getStatusThunkCreator,
         updateStatus: updateStatusThunkCreator,
-        updatePhoto: updatePhotoThunkCreator}), // самый нижний слой контейнера
+        updatePhoto: updatePhotoThunkCreator,
+        updateProfile: updateProfileThunkCreator}), // самый нижний слой контейнера
     withRouter)// самый внешний слой контейнера
 (ProfileContainer);

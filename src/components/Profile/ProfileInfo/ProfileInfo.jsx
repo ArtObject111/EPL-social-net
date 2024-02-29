@@ -1,35 +1,79 @@
-import React from "react";
+import React, {useState} from "react";
 import s from "./ProfileInfo.module.css"
 import Preloader from "../../common/Preloader/Preloader";
 import bannerPhoto from "../../../assets/images/banner-picture.png"
 import userPhoto from "../../../assets/images/user_image.png"
 import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
+import { ProfileDataForm } from "./ProfileFormData";
 
-/*{props.profile.lookingForAJob ? <img src={"https://emojio.ru/images/apple-b/2705.png"}/> // это тернарное выражение срабатывало в разметке, а полный условный оператор нет
-    : <img src={"https://emoji-uc.akamaized.net/orig/ae/f30b7d0b156dfcbbb5e0d829e52791.png"}/>}*/
+const ProfileInfo = ({
+                         isOwner,
+                         profile,
+                         status,
+                         updateStatus,
+                         updatePhoto,
+                         updateProfile
+                     }) => {
 
-const ProfileInfo = (props) => {
+    let [editMode, setEditMode] = useState(false)
+    
+    const activateEditMode = () => !editMode ? setEditMode(true) : setEditMode(false)
 
-    if (!props.profile) {
+
+    if (!profile) {
         return <Preloader/>
     }
-    const setSymbol = () => {if (props.profile.lookingForAJob) {
-        return (
-            <div className={s.lookingForAJob}>
-                Открыт для вакансий<img src={"https://emojio.ru/images/apple-b/2705.png"}/>
-            </div>
-        );
-    }
-    else if (!props.profile.lookingForAJob) {
-        return (
-            <div className={s.lookingForAJob}>
-                Работаю <img src={"https://emojis.wiki/emoji-pics/lg/tractor-lg.png"}/>
-            </div>
-        );
-    }}
 
+    const setSymbol = () => {
+        if (profile.lookingForAJob) {
+            return (
+                <div className={s.lookingForAJob}>
+                    Открыт для вакансий<img src={"https://emojio.ru/images/apple-b/2705.png"}/>
+                </div>
+            );
+        } else if (!profile.lookingForAJob) {
+            return (
+                <div className={s.lookingForAJob}>
+                    Работаю <img src={"https://emojis.wiki/emoji-pics/lg/tractor-lg.png"}/>
+                </div>
+            );
+        }
+    }
+
+    const ProfileData = ({profile, isOwner, activateEditMode}) => {
+
+        const Contact = ({contactTitle, contactValue}) => {
+            return <div><b>{contactTitle}: </b>{contactValue}</div>
+        }
+
+        return (
+            <div className={s.profileData}>
+                {isOwner && <button onClick={activateEditMode}>Edit</button>}
+                <div className={s.fullName}>
+                    {profile.fullName}
+                </div>
+                {profile.aboutMe && <div><b>About me: </b>{profile.aboutMe}</div>}
+                <br/>   
+                {setSymbol()}
+                {profile.lookingForAJobDescription &&
+                    <div className={s.lookingForAJobDescription}>{profile.lookingForAJobDescription}</div>}
+                    <b>Contacts:</b>
+                    <div className={s.contacts}>
+                        {Object.keys(profile.contacts).map(key => profile.contacts[key] && <Contact contactTitle={key} contactValue={profile.contacts[key]}/>)}
+                    </div>
+            </div>
+        )
+    }
+     
     const updateUserPhoto = (e) => {
-        e.target.files[0] && props.updatePhoto(e.target.files[0])
+        e.target.files[0] && updatePhoto(e.target.files[0])
+    }
+
+    const onSubmit = (formData) => { //обернуть в async await не получится, т к он вернет промис
+        console.log(formData)
+        updateProfile(formData).then(
+            () =>  activateEditMode()
+        )
     }
 
     return (
@@ -38,32 +82,26 @@ const ProfileInfo = (props) => {
                 <img alt={"Profile"} className={s.banner} src={bannerPhoto}/>
                 <div className={s.descriptionBlock}>
                     <div className={s.profilePhoto}>
-                        <img alt={"User"} src={props.profile.photos.large || userPhoto}/>
-                        {props.isOwner && <input type="file" onChange={updateUserPhoto}/>}
+                        <img alt={"User"} src={profile.photos.large || userPhoto}/>
+                        {isOwner && <input type="file" onChange={updateUserPhoto}/>}
                     </div>
                     <div className={s.profileInfo}>
-                        <div className={s.fullName}>{props.profile.fullName}</div>
-                        <div>{props.profile.aboutMe}</div>
-                        <br/>
-                        {setSymbol()}
-                        <div className={s.lookingForAJobDescription}>{props.profile.lookingForAJobDescription}</div>
-                        <div className={s.contacts}>Контакты:</div>
-                        <div>{props.profile.contacts.facebook}</div>
-                        <div>{props.profile.contacts.website}</div>
-                        <div>{props.profile.contacts.vk}</div>
-                        <div>{props.profile.contacts.twitter}</div>
-                        <div>{props.profile.contacts.instagram}</div>
-                        <div>{props.profile.contacts.youtube}</div>
-                        <div>{props.profile.contacts.github}</div>
-                        <div>{props.profile.contacts.mainLink}</div>
-                        {props.isOwner ?
-                            <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/> :
-                            <>
-                                <span className={s.statusLabel}>Status: </span>
-                                <div>{props.status || "---"}</div>
-                            </>}
+                        {editMode
+                         ? <ProfileDataForm
+                                initialValues={profile}
+                                profile={profile} 
+                                activateEditMode={activateEditMode}
+                                onSubmit={onSubmit}/>
+                         : <ProfileData 
+                                profile={profile} 
+                                isOwner={isOwner} 
+                                activateEditMode={activateEditMode}/>}
+                        <ProfileStatusWithHooks
+                                isOwner={isOwner}
+                                status={status}
+                                updateStatus={updateStatus}/>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
     )

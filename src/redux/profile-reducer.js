@@ -1,4 +1,5 @@
 import {profileAPI} from "../api/api";
+import { stopSubmit } from "redux-form";
 
 const ADD_POST = "ADD-POST";
 const DELETE_POST = "DELETE-POST";
@@ -103,10 +104,23 @@ export const updateStatusThunkCreator = (status) => (dispatch) => {
     })
 }
 
-export const updatePhotoThunkCreator = (photoFile) => async (dispatch) => { //переделать в async await
+export const updatePhotoThunkCreator = (photoFile) => async (dispatch) => {
     const data = await profileAPI.updateUserPhoto(photoFile)
         if (data.resultCode === 0) {
             dispatch(setPhotoActionCreator(data.data.photos))
+        }
+}
+
+export const updateProfileThunkCreator = (profile) => async (dispatch, getState) => {
+    const userId = getState().authUserBro.data.id
+    const data = await profileAPI.updateUserProfile(profile)
+        if (data.resultCode === 0) {
+            dispatch(getUserProfileThunkCreator(userId))
+        }
+        else {
+            dispatch(stopSubmit("edit-profile", {_error: data.messages[0]})) ///AC, который заготовили разработчики redux-form
+                                                                             //стоит распарсить строку ошибки
+            return Promise.reject(data.messages[0])
         }
 }
 
