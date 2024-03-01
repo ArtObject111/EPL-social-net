@@ -41,6 +41,7 @@
 .lookingForAJob {
     text-decoration: none;
     color: gray;
+    display: flex;
 }
 
 .contacts {
@@ -50,10 +51,6 @@
 .lookingForAJob img{
     padding-left: 10px;
     width: 20px;
-}
-
-.lookingForAJobDescription {
-    color: gray;
 }
 
 .statusLabel {

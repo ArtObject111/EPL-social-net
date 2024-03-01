@@ -1,10 +1,11 @@
-import {authAPI} from "../api/api";
+import {authAPI, securityAPI} from "../api/api";
 import userPhoto from "../assets/images/oval.svg"
 import {stopSubmit} from "redux-form";
 // полезно для тестирования action(a) SET_AUTH_USER_AVATAR
 
 const SET_USER_DATA = "EPL-SN/auth/SET-USER-DATA";
 const SET_AUTH_USER_AVATAR = "EPL-SN/auth/SET-AUTH-USER-AVATAR";
+const GET_CAPTCHA_URL_SUCCESS = "EPL-SN/auth/GET-CAPTCHA-URL-SUCCESS";
 
 let initialState = {
     data: {
@@ -13,7 +14,8 @@ let initialState = {
         email: null,
         isAuth: false
     },
-    authUserPhoto: null
+    authUserPhoto: null,
+    captchaUrl: null //if null, then captchaUrl is not required
     /*messages: [],
     fieldsErrors: [],
     resultCode: 0,
@@ -27,10 +29,24 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 data: {...action.loginData}, //copy of {id, login, email, isAuth}
             }
+        // до диструктуризации
+        // case SET_AUTH_USER_AVATAR:
+        //     return {
+        //         ...state,
+        //         authUserPhoto: action.userAvatar
+        //     }
+        // case GET_CAPTCHA_URL_SUCCESS:
+        //     return {
+        //         ...state,
+        //         captchaUrl: action.captchaUrl
+        //     }
+        //
+        // после диструктуризации
         case SET_AUTH_USER_AVATAR:
+        case GET_CAPTCHA_URL_SUCCESS:
             return {
                 ...state,
-                authUserPhoto: action.userAvatar
+                ...action.payload
             }
         default:
             return state;
@@ -38,7 +54,8 @@ const authReducer = (state = initialState, action) => {
 }
 
 export const setAuthUserData = (id, login, email, isAuth) => ({type: SET_USER_DATA, loginData: {id, login, email, isAuth} });
-export const setAuthUserAvatar = (userAvatar) => ({ type: SET_AUTH_USER_AVATAR, userAvatar});
+export const setAuthUserAvatar = (userAvatar) => ({ type: SET_AUTH_USER_AVATAR, payload: {userAvatar} });
+export const getCaptcaUrlSuccess = (captchaUrl) => ({ type: GET_CAPTCHA_URL_SUCCESS, payload: {captchaUrl} });
 
 //Promise до async await
 // export const getAuthUserDataTC = () => {
@@ -78,15 +95,27 @@ export const getAuthUserDataTC = () => {
 //         })
 //     }
 
-export const loginTC = (email, password, rememberMe) => async (dispatch) => {
-    const data = await authAPI.login(email, password, rememberMe);
+export const loginTC = (email, password, rememberMe, captcha) => async (dispatch, getState) => {
+    const data = await authAPI.login(email, password, rememberMe, captcha);
+    const captchaUrl = getState().authUserBro.captchaUrl
         if (data.resultCode === 0) {
             dispatch(getAuthUserDataTC())
+            captchaUrl && dispatch(getCaptcaUrlSuccess(null))
         } else {
+            if (data.resultCode === 10) {
+                dispatch(getCaptchaUrlTC())
+            }
             const message = data.messages.length > 0 ? data.messages[0] : "Some error"
             const action = stopSubmit("login", {_error: message}) ///AC, который заготовили разработчики redux-form
             dispatch(action)
         }
+}
+
+export const getCaptchaUrlTC = () => async (dispatch) => {
+    const data = await securityAPI.getCaptchaUrl();
+    const captchaUrl = data.url
+    
+    dispatch(getCaptcaUrlSuccess(captchaUrl))
 }
 
 // export const logoutTC = () => {

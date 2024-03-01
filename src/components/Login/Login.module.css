@@ -9,5 +9,8 @@ form div {
 
 .formSummaryError {
     color: red;
-    display: inline-block;
+}
+
+form img {
+    margin-top: 10px;
 }

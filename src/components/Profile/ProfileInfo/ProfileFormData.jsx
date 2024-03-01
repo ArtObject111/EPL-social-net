@@ -8,12 +8,6 @@ const Textarea = FormControl("textarea")
 
 export let ProfileDataForm = ({ handleSubmit, profile, error }) => {
 
-    // const ContactForm = ({contactTitle}) => {
-    //     return <div>
-    //             <b>{contactTitle}: </b>{createField(key, key, null, Input)}
-    //         </div>
-    // }
-
     return (
         <form onSubmit={handleSubmit}>
             <button>Save</button>

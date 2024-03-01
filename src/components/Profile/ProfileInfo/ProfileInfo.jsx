@@ -53,10 +53,9 @@ const ProfileInfo = ({
                     {profile.fullName}
                 </div>
                 {profile.aboutMe && <div><b>About me: </b>{profile.aboutMe}</div>}
-                <br/>   
                 {setSymbol()}
                 {profile.lookingForAJobDescription &&
-                    <div className={s.lookingForAJobDescription}>{profile.lookingForAJobDescription}</div>}
+                    <div><b>Professional skills: </b>{profile.lookingForAJobDescription}</div>}
                     <b>Contacts:</b>
                     <div className={s.contacts}>
                         {Object.keys(profile.contacts).map(key => profile.contacts[key] && <Contact contactTitle={key} contactValue={profile.contacts[key]}/>)}

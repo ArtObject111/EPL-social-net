@@ -11,9 +11,7 @@ export const FormControl = (Component) => ({input, meta: {touched, error}, ...pr
             <div>
                 <Component  {...input} {...props}/>
             </div>
-            <div>
                 {isError && <span>{error}</span>}
-            </div>
         </div>
     )
 }
