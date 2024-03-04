@@ -1,3 +1,14 @@
+.user {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    max-width: min-content;
+}
+
+.user :nth-child(2) {
+    margin: 5px 0 5px 0;
+}
+
 .userPhoto {
     border-radius: 50%;
     width: 100px;

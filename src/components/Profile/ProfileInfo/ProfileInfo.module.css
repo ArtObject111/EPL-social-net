@@ -9,7 +9,7 @@
     padding: 10px;
     display: grid;
     grid-template-columns: 3fr 10fr;
-    width: 98%;
+    width: min-content;
     border: 0px solid;
     border-radius: 15px;
     background-color: aliceblue;
@@ -18,6 +18,7 @@
 
 .profileInfo {
     padding-left: 20px;
+    min-width: 400px;
 }
 
 .descriptionBlock div:not(:last-child) {
@@ -33,6 +34,10 @@
     height: 300px;
 }
 
+.profileData span{
+    color:gray;
+}
+
 .fullName {
     font-size: x-large;
     font-weight: bold;
@@ -45,7 +50,7 @@
 }
 
 .contacts {
-    padding-left: 10px;
+    margin: 5px 0 5px 0;
 }
 
 .lookingForAJob img{

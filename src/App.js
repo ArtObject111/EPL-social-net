@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from "./components/Navbar/Navbar";
-import {HashRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Navigate, Route, Routes} from "react-router-dom";
 import News from "./components/News/News";
 import Music from "./components/Music/Music";
 import Settings from "./components/Settings/Settings";
@@ -27,12 +27,14 @@ class App extends Component {
         if (!this.props.isInitialized) {
             return <Preloader/>
         }
+        
         return (
             <div className="app-wrapper">
                 <HeaderContainer/>
                 <Navbar/>
                 <div className="app-wrapper-content">
                     <Routes>
+                        <Route path="/" element={<Navigate to={"/profile"}/>}/>
                         <Route path="/profile/:userId" element={withSuspense(ProfileContainer)}/>
                         <Route path="/profile" element={
                             withSuspense(ProfileContainer)}/> {/*добавили этот тег из-за использования HOC pattern in router's v6*/}
@@ -42,6 +44,7 @@ class App extends Component {
                         <Route path="/music" element={<Music/>}/>
                         <Route path="/settings" element={<Settings/>}/>
                         <Route path="/login" element={<Login/>}/>
+                        <Route path="*" element={<div>404 NOT FOUND</div>}/>
                     </Routes>
                 </div>
             </div>

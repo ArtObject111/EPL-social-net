@@ -10,7 +10,7 @@ export const User = ({
                          followBro
                      }) => {
     return (
-        <div key={user.id}>
+        <div className={s.user} key={user.id}>
             <div>
                 <NavLink to={"/profile/" + user.id}>
                     <img alt={"User photo"} src={user.photos.small != null ? user.photos.small : userPhoto}
@@ -30,8 +30,6 @@ export const User = ({
             </div>
             <div>{user.name}</div>
             <div>{user.status}</div>
-            <div>{"user.location.country"}</div>
-            <div>{"user.location.city"}</div>
         </div>
     )
 }

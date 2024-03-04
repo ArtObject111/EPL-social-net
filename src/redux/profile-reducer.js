@@ -96,12 +96,16 @@ export const getStatusThunkCreator = (userId) => (dispatch) => {
     })
 }
 
-export const updateStatusThunkCreator = (status) => (dispatch) => {
-    profileAPI.updateUserStatus(status).then(data => {
-        if (data.resultCode === 0) {
+export const updateStatusThunkCreator = (status) => async (dispatch) => {
+    try {
+        const data = await profileAPI.updateUserStatus(status)
+    
+        if (data.data.resultCode === 0) {
             dispatch(setStatusActionCreator(status))
         }
-    })
+    } catch (error) {
+        console.error("error: " + error)
+   }
 }
 
 export const updatePhotoThunkCreator = (photoFile) => async (dispatch) => {

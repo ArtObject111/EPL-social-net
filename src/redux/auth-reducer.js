@@ -1,5 +1,4 @@
 import {authAPI, securityAPI} from "../api/api";
-import userPhoto from "../assets/images/oval.svg"
 import {stopSubmit} from "redux-form";
 // полезно для тестирования action(a) SET_AUTH_USER_AVATAR
 
