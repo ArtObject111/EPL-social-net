@@ -67,7 +67,7 @@ export const authAPI = {
         return instance.get(`profile/${userId}`)
             .then(response => response.data.photos.small)
     },
-    login(email, password, rememberMe = false, captcha = null) {
+    login(email, password, rememberMe = false, captcha = null ) {
         return instance.post(`auth/login`, {email, password, rememberMe, captcha})
             .then(response => response.data)
     },

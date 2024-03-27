@@ -12,6 +12,7 @@ export const PageBar = (props) => {
         for (let i = countClick; i <= props.pageBarLength + countClick && i <= pagesCount; i++) {
             pagesArray.push(i);
         }
+        debugger
         props.flipNext(pagesArray, countClick)
         props.onPageChanged(props.currentPage + 1)// связываем активную страницу с номером массива pageBar
     }
