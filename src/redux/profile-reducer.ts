@@ -1,6 +1,6 @@
 import { profileAPI } from "../api/api";
 import { stopSubmit } from "redux-form";
-import { PhotosType, PostType, ProfileType } from "../types/type";
+import { PhotosType, PostType, ProfileType } from "../types/types";
 
 const ADD_POST = "EPL-SN/profilePage/ADD-POST";
 const DELETE_POST = "EPL-SN/profilePage/DELETE-POST";

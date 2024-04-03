@@ -1,5 +1,5 @@
 import { usersAPI } from "../api/api";
-import { UserType } from "../types/type";
+import { UserType } from "../types/types";
 import { updateObjectInArray } from "../utils/object-helpers";
 
 const FOLLOW = "EPL-SN/usersPage/FOLLOW";
@@ -14,7 +14,7 @@ const FLIP_NEXT = "EPL-SN/usersPage/FLIP-NEXT";
 const FLIP_BACK = "EPL-SN/usersPage/FLIP-BACK";
 
 let initialState = {
-    totalUsersCount: null as number | null,
+    totalUsersCount: 0 as number,
     pageSize: 5 as number,
     pageBarLength: 20 as number,
     currentPage: 1 as number,
@@ -189,12 +189,12 @@ const followUnfollowFlow = async (dispatch: any, userID: number, apiMethod: any,
     dispatch(toggleFollowingInProgress(false, userID))
 }
 
-export const followBroThunkContainer = (userID: number) => async (dispatch: any) => {
+export const followBroTC = (userID: number) => async (dispatch: any) => {
     let apiMethod = usersAPI.followUser.bind(usersAPI);
     await followUnfollowFlow(dispatch, userID, apiMethod, followBroSuccess)
 }
 
-export const unfollowBroThunkContainer = (userID: number) => async (dispatch: any) => {
+export const unfollowBroTC = (userID: number) => async (dispatch: any) => {
     let apiMethod = usersAPI.unfollowUser.bind(usersAPI);
     await followUnfollowFlow(dispatch, userID, apiMethod, unfollowBroSuccess)
 }

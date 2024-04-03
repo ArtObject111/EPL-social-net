@@ -1,10 +1,9 @@
 import React from "react";
-import {connect} from "react-redux";
 import {
     toggleFollowingInProgress,
     getUsersThunkCreator,
-    followBroThunkContainer,
-    unfollowBroThunkContainer,
+    followBroTC,
+    unfollowBroTC,
     setCurrentPageThunkCreator,
     setPageBar,
     setTotalUsersCount,
@@ -14,20 +13,50 @@ import Users from "./Users";
 import Preloader from "../common/Preloader/Preloader";
 import {compose} from "redux";
 import {
-    getCountBack, getCountFlip,
-    getCountNext,
+    getCountFlip,
     getCurrentPage,
     getFollowingInProgress,
     getIsFetching, getPageBar, getPageBarLength,
     getPageSize,
     getTotalUsersCount, getUsers
 } from "../../redux/users-selectors";
+import { UserType } from "../../types/types";
+import { AppStateType } from "../../redux/redux-store";
+import { connect, ConnectedProps } from "react-redux";
 
-class UsersContainer extends React.Component {
+type MapStatePropsType = {
+    isFetching: boolean 
+    totalUsersCount: number
+    pageSize: number
+    pageBarLength: number
+    currentPage: number
+    countFlip: number
+    pageBar: Array<number>
+    usersData: Array<UserType>
+    followingInProgress: Array<number> | []
+}
+
+type MapDispatchPropsType = {
+    setPageBar: (pagesArray: Array<number>) => void
+    getUsers: (currentPage: number, pageSize: number) => void
+    setCurrentPage: (pageNumber: number, pageSize: number) => void
+    flipNext: (pagesArray: Array<number>, countClick: number) => void,
+    flipBack: (pagesArray: Array<number>, countClick: number) => void,
+    unfollowBro: (userId: number) => void,
+    followBro: (userId: number) => void
+}
+
+type OwnPropsType = {
+
+}
+
+type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType
+
+class UsersContainer extends React.Component<PropsType> {
 
     componentDidMount() {
-        let {currentPage, pageSize, pageBarLength, setPageBar} = this.props
-        this.props.getUsers(currentPage, pageSize);
+        let {currentPage, pageSize, pageBarLength, setPageBar, getUsers} = this.props
+        getUsers(currentPage, pageSize);
 
         let pagesArray = [];
         for (let i = 1; i <= pageBarLength; i++) {
@@ -36,7 +65,7 @@ class UsersContainer extends React.Component {
         setPageBar(pagesArray)
     }
 
-    onPageChanged = (pageNumber) => {
+    onPageChanged = (pageNumber: number) => {
         this.props.setCurrentPage(pageNumber, this.props.pageSize); //callback, который приходит из connect
     }
 
@@ -48,23 +77,23 @@ class UsersContainer extends React.Component {
                 pageSize={this.props.pageSize}
                 pageBarLength={this.props.pageBarLength}
                 currentPage={this.props.currentPage}
-                onPageChanged={this.onPageChanged}
-                followBro={this.props.followBroThunkContainer}
-                unfollowBro={this.props.unfollowBroThunkContainer}
                 usersData={this.props.usersData}
                 followingInProgress={this.props.followingInProgress}
                 pageBar={this.props.pageBar}
+                countFlip={this.props.countFlip}
+                onPageChanged={this.onPageChanged}
+                followBro={this.props.followBro}
+                unfollowBro={this.props.unfollowBro}
                 flipNext={this.props.flipNext}
                 flipBack={this.props.flipBack}
-                countNext={this.props.countNext}
-                countBack={this.props.countBack}
-                countFlip={this.props.countFlip}
             />
         </>
     }
 }
 
-let mapStateToProps = (state) => { //объекты, которая получает компонента UsersContainer
+// type PropsFromRedux = ConnectedProps<typeof>
+
+let mapStateToProps = (state: AppStateType): MapStatePropsType => { //объекты, которая получает компонента UsersContainer
     return {
         usersData: getUsers(state),
         totalUsersCount: getTotalUsersCount(state),
@@ -74,15 +103,13 @@ let mapStateToProps = (state) => { //объекты, которая получа
         followingInProgress: getFollowingInProgress(state),
         pageBarLength: getPageBarLength(state),
         pageBar: getPageBar(state),
-        countNext: getCountNext(state),
-        countBack: getCountBack(state),
         countFlip: getCountFlip(state)
     }
 };
 
-export default compose(connect(mapStateToProps, {
-    followBroThunkContainer, unfollowBroThunkContainer,
-    toggleFollowingInProgress, setPageBar,
+export default compose(
+    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+    followBro: followBroTC, unfollowBro: unfollowBroTC,
     getUsers: getUsersThunkCreator, setCurrentPage: setCurrentPageThunkCreator,
-    setTotalUsersCount, flipNext, flipBack})
+    setPageBar, flipNext, flipBack})
 )(UsersContainer)

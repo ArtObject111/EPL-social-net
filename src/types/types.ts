@@ -34,7 +34,7 @@ export type PostType = {
 //users
 export type UserType = {
     name: string,
-    id: number | null,
+    id: number,
     uniqueUrlName: number | null,
     status: string | null,
     followed: boolean,
