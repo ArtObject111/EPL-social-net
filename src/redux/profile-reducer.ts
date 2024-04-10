@@ -1,6 +1,7 @@
-import { profileAPI } from "../api/api";
+import { ResultCodesEnum, profileAPI } from "../api/api";
 import { stopSubmit } from "redux-form";
 import { PhotosType, PostType, ProfileType } from "../types/types";
+import { setAuthUserAvatar } from "./auth-reducer";
 
 const ADD_POST = "EPL-SN/profilePage/ADD-POST";
 const DELETE_POST = "EPL-SN/profilePage/DELETE-POST";
@@ -147,7 +148,7 @@ export const updateStatusThunkCreator = (status: string) => async (dispatch: any
     try {
         const data = await profileAPI.updateUserStatus(status)
     
-        if (data.data.resultCode === 0) {
+        if (data.data.resultCode === ResultCodesEnum.Success) {
             dispatch(setStatusActionCreator(status))
         }
     } catch (error) {
@@ -157,15 +158,16 @@ export const updateStatusThunkCreator = (status: string) => async (dispatch: any
 
 export const updatePhotoThunkCreator = (photoFile: any) => async (dispatch: any) => {
     const data = await profileAPI.updateUserPhoto(photoFile)
-        if (data.resultCode === 0) {
+        if (data.resultCode === ResultCodesEnum.Success) {
             dispatch(setPhotoActionCreator(data.data.photos))
+            dispatch(setAuthUserAvatar(data.data.photos.small))
         }
 }
 
 export const updateProfileThunkCreator = (profile: ProfileType) => async (dispatch: any, getState: any) => {
     const userId = getState().authUserBro.data.id
     const data = await profileAPI.updateUserProfile(profile)
-        if (data.resultCode === 0) {
+        if (data.resultCode === ResultCodesEnum.Success) {
             dispatch(getUserProfileThunkCreator(userId))
         }
         else {

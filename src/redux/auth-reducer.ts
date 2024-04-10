@@ -1,5 +1,7 @@
-import {authAPI, securityAPI} from "../api/api";
-import {stopSubmit} from "redux-form";
+import { ResultCodeForCaptcha } from './../api/api';
+import { ResultCodesEnum, authAPI, securityAPI } from "../api/api";
+import { stopSubmit } from "redux-form";
+import { Dispatch } from "react";
 
 const SET_USER_DATA = "EPL-SN/auth/SET-USER-DATA";
 const SET_AUTH_USER_AVATAR = "EPL-SN/auth/SET-AUTH-USER-AVATAR";
@@ -29,7 +31,7 @@ let initialState = {
 
 export type InitialStateType = typeof initialState
 
-const authReducer = (state = initialState, action: any): InitialStateType => {
+const authReducer = (state = initialState, action: ActionsTypes): InitialStateType => {
     switch (action.type) {
         case SET_USER_DATA:
             return {
@@ -77,10 +79,10 @@ export const setAuthUserData = (id: number | null, login: string | null, email: 
 
 type SetAuthUserAvatarActionType = {
     type: typeof SET_AUTH_USER_AVATAR,
-    payload: { userAvatar: string }
+    payload: { authUserPhoto: string | null }
 }
 
-export const setAuthUserAvatar = (userAvatar: string): SetAuthUserAvatarActionType => ({ type: SET_AUTH_USER_AVATAR, payload: {userAvatar} });
+export const setAuthUserAvatar = (authUserPhoto: string | null): SetAuthUserAvatarActionType => ({ type: SET_AUTH_USER_AVATAR, payload: {authUserPhoto} });
 
 type GetCaptcaUrlSuccessActionType = {
     type: typeof GET_CAPTCHA_URL_SUCCESS,
@@ -103,14 +105,17 @@ export const getCaptcaUrlSuccess = (captchaUrl: string): GetCaptcaUrlSuccessActi
 //     }
 // }
 
+type DispatchType = Dispatch<ActionsTypes>
+type ActionsTypes = SetAuthUserDataActionType | SetAuthUserAvatarActionType | GetCaptcaUrlSuccessActionType
+
 export const getAuthUserDataTC = () => {
-    return async (dispatch: any) => {
-        const data = await authAPI.authUser();
-        if (data.resultCode === 0) {
+    return async (dispatch: DispatchType) => {
+        const data = await authAPI.authMe();
+        if (data.resultCode === ResultCodesEnum.Success) {
             const {id, login, email} = data.data;
             dispatch(setAuthUserData(id, login, email, true));
-            const avatar = await authAPI.authUserPhotoAx(data.data.id);
-            dispatch(setAuthUserAvatar(avatar));
+            const avatarData = await authAPI.authUserPhotoAx(data.data.id);
+            dispatch(setAuthUserAvatar(avatarData));
         }
     }
 }
@@ -127,12 +132,12 @@ export const getAuthUserDataTC = () => {
 //         })
 //     }
 
-export const loginTC = (email: string, password: string, rememberMe: boolean, captcha: undefined | null) => async (dispatch: any) => {
+export const loginTC = (email: string, password: string, rememberMe: boolean, captcha: undefined | null) => async (dispatch: DispatchType | any) => {
     const data = await authAPI.login(email, password, rememberMe, captcha);
-        if (data.resultCode === 0) {
+        if (data.resultCode === ResultCodesEnum.Success) {
             dispatch(getAuthUserDataTC())
         } else {
-            if (data.resultCode === 10) {
+            if (data.resultCode === ResultCodeForCaptcha.Captcha) {
                 dispatch(getCaptchaUrlTC())
             }
             const message = data.messages.length > 0 ? data.messages[0] : "Some error"
@@ -141,7 +146,7 @@ export const loginTC = (email: string, password: string, rememberMe: boolean, ca
         }
 }
 
-export const getCaptchaUrlTC = () => async (dispatch: any) => {
+export const getCaptchaUrlTC = () => async (dispatch: DispatchType) => {
     const data = await securityAPI.getCaptchaUrl();
     const captchaUrl = data.url
     
@@ -161,7 +166,7 @@ export const getCaptchaUrlTC = () => async (dispatch: any) => {
 
 export const logoutTC = () => async (dispatch: any) => {
     const data = await authAPI.logout()
-            if (data.resultCode === 0) {
+            if (data.resultCode === ResultCodesEnum.Success) {
                 dispatch(setAuthUserData(null, null, null, false))
             }
 }

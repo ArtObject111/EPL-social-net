@@ -2,18 +2,31 @@ import React from "react";
 import s from "./Header.module.css";
 import {NavLink} from "react-router-dom";
 import userPhoto from "../../assets/images/user_image.png";
-import Preloader from "../common/Preloader/Preloader";
 
-const Header = (props) => {
+type PropsType = {
+    isAuth: boolean,
+    authUserPhoto: string | null,
+    authUserName: string | null,
+
+    logout: () => void
+}
+
+const Header: React.FC<PropsType> = ({
+    isAuth,
+    authUserPhoto,
+    authUserName,
+
+    logout
+}) => {
     const setAuthBlock = () => {
-        if (props.isAuth) {
+        if (isAuth) {
             return (
                 <>
-                    <img src={props.authUserPhoto ? props.authUserPhoto : userPhoto}/>
+                    <img src={authUserPhoto ? authUserPhoto : userPhoto}/>
                     <span>
-                        {props.login}
+                        {authUserName}
                         <div>
-                            <button onClick={props.logout}>Log out</button>
+                            <button onClick={logout}>Log out</button>
                         </div>
                     </span>
                 </>)
@@ -27,9 +40,6 @@ const Header = (props) => {
 
             <div className={s.loginBlock}>
                 {setAuthBlock()}
-                {/*{props.isAuth ? props.login
-                : <NavLink to={"/login"}>Login</NavLink>}
-            <img src={props.authUserPhoto}/>//как всегда работает только тернарное выражение*/}
             </div>
         </header>
     )

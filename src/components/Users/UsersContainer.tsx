@@ -1,12 +1,10 @@
 import React from "react";
 import {
-    toggleFollowingInProgress,
     getUsersThunkCreator,
     followBroTC,
     unfollowBroTC,
     setCurrentPageThunkCreator,
     setPageBar,
-    setTotalUsersCount,
     flipNext, flipBack
 } from "../../redux/users-reducer";
 import Users from "./Users";
@@ -22,7 +20,7 @@ import {
 } from "../../redux/users-selectors";
 import { UserType } from "../../types/types";
 import { AppStateType } from "../../redux/redux-store";
-import { connect, ConnectedProps } from "react-redux";
+import { connect } from "react-redux";
 
 type MapStatePropsType = {
     isFetching: boolean 
