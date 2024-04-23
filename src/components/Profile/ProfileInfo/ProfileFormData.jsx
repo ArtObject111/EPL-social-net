@@ -1,10 +1,10 @@
 import React from "react"
-import { createField, FormControl } from "../../common/FromControls/FormControls"
+import { createField, withFormControl } from "../../common/FromControls/FormControls"
 import { reduxForm } from "redux-form"
 import s from "./ProfileInfo.module.css"
 
-const Input = FormControl("input")
-const Textarea = FormControl("textarea")
+const Input = withFormControl("input")
+const Textarea = withFormControl("textarea")
 
 export let ProfileDataForm = ({ handleSubmit, profile, error }) => {
 
